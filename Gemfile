@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
-gem 'github-pages', group: :jekyll_plugins
-gem 'webrick'
-gem 'jekyll-toc', '~> 0.0.3'
+group :jekyll_plugins do
+  gem 'github-pages'
+  gem 'jekyll-toc'
+  gem 'jekyll-archives'
+  gem 'jekyll-paginate-v2'
+  gem 'jekyll-feed'
+  gem 'jekyll-sitemap'
+  gem 'jemoji'
+end
 
