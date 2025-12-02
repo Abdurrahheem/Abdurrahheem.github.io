@@ -10,7 +10,7 @@ nav_order: 2
 
 <div class="publications">
 
-<h2>Selected Papers</h2>
+<h2></h2>
 <ul>
   <li>
     <strong>Guess and Guide Zero-Shot Diffusion Guidance</strong><br>
