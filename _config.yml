@@ -371,25 +371,26 @@ external_links:
 # -----------------------------------------------------------------------------
 # Responsive WebP Images
 # -----------------------------------------------------------------------------
+# Responsive WebP Images
+# -----------------------------------------------------------------------------
 
-# MAKE SURE imagemagick is installed and on your PATH before enabling imagemagick. In a terminal, run:
-#   convert -version
-imagemagick:
-  enabled: true # enables responsive images for your site (recommended, see https://github.com/alshedivat/al-folio/issues/537)
-  widths:
-    - 480
-    - 800
-    - 1400
-  input_directories:
-    - assets/img/
-  input_formats:
-    - ".jpg"
-    - ".jpeg"
-    - ".png"
-    - ".tiff"
-    - ".gif"
-  output_formats:
-    webp: "-quality 85"
+# DISABLED: Causes issues without imagemagick plugin installed
+# imagemagick:
+#   enabled: true # enables responsive images for your site (recommended, see https://github.com/alshedivat/al-folio/issues/537)
+#   widths:
+#     - 480
+#     - 800
+#     - 1400
+#   input_directories:
+#     - assets/img/
+#   input_formats:
+#     - ".jpg"
+#     - ".jpeg"
+#     - ".png"
+#     - ".tiff"
+#     - ".gif"
+#   output_formats:
+#     webp: "-quality 85"
 
 # Lazy loading images
 #   If you enable lazy loading, all images will add the loading="lazy" attribute.

@@ -7,7 +7,7 @@ subtitle: <strong>PhD student </strong> @ <a href="https://mbzuai.ac.ae"> MBZUAI
 
 profile:
   align: right
-  image: prof_pic_self.jpg
+  image: picture.jpg
   image_circular: false # crops the image to make it circular
 
 news: false # includes a list of news items
