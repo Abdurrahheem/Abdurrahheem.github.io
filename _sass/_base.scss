@@ -347,6 +347,10 @@ ul.task-list input[type="checkbox"] {
     transition: all 0.2s;
   }
 
+  // Fix for unclickable menu icon
+  position: relative;
+  z-index: 1040;
+
   .top-bar {
     transform: rotate(45deg);
     transform-origin: 10% 10%;
@@ -933,6 +937,7 @@ progress {
 
   /* Progress bar value for IE10  */
   color: var(--global-theme-color);
+  pointer-events: none;
 }
 
 progress::-webkit-progress-bar {
@@ -955,6 +960,7 @@ progress::-moz-progress-bar {
   left: 0;
   height: 5px;
   display: block;
+  pointer-events: none;
 }
 
 .progress-bar {
