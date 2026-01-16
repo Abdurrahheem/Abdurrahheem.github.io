@@ -18,6 +18,11 @@ nav_order: 2
       <div>
         <div style="font-weight: bold;">Guess and Guide Zero-Shot Diffusion Guidance (under review)</div>
         <div style="font-size: 0.8em;"><strong>Abduragim Shtanchaev</strong>, Albina Ilina, Yazid Janati, Badr Maufad, Martin Takáč, Eric Moulines</div>
+        <div style="margin-top: 0.5rem;">
+            <a href="/projects/guess-and-guide/" style="text-decoration: none; border: 1px solid currentColor; padding: 2px 10px; border-radius: 15px; font-size: 0.8em; margin-right: 5px;">Project Page</a>
+            <a href="#" style="text-decoration: none; border: 1px solid currentColor; padding: 2px 10px; border-radius: 15px; font-size: 0.8em; margin-right: 5px;">Paper</a>
+            <a href="#" style="text-decoration: none; border: 1px solid currentColor; padding: 2px 10px; border-radius: 15px; font-size: 0.8em;">Code</a>
+        </div>
       </div>
     </div>
   </li>

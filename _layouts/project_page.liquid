@@ -1,0 +1,309 @@
+---
+layout: default
+---
+<!-- _layouts/project_page.liquid -->
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aleo:wght@300;400;700&family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* Nerfies-inspired Custom Styles */
+  .nerfies-wrapper {
+    font-family: 'Noto Sans', sans-serif;
+    color: var(--global-text-color);
+    line-height: 1.5;
+  }
+
+  .nerfies-wrapper h1, .nerfies-wrapper h2, .nerfies-wrapper h3 {
+    font-family: 'Aleo', serif;
+    color: var(--global-text-color);
+    font-weight: 700;
+  }
+
+  .nerfies-title {
+    font-family: 'Aleo', serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .nerfies-authors {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .nerfies-author-name {
+    color: #209cee; /* Keep blue accent */
+    font-weight: 500;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+
+  .nerfies-author-name:hover {
+    text-decoration: underline;
+    color: #157ac0;
+  }
+
+  .nerfies-affiliations {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: var(--global-text-color-light); /* Use theme secondary text color */
+  }
+
+  .nerfies-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .nerfies-button {
+    background-color: #242424;
+    color: #fff !important;
+    border-radius: 290486px;
+    padding: 10px 24px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  /* Ensure text and icons are always white, suppressing global link styles */
+  .nerfies-button:visited, 
+  .nerfies-button:active,
+  .nerfies-button span,
+  .nerfies-button i,
+  .nerfies-button .icon {
+    color: #fff !important;
+  }
+
+  html[data-theme="dark"] .nerfies-button {
+    background-color: #363636;
+    border: 1px solid #555;
+  }
+
+  .nerfies-button:hover {
+    background-color: #3a3a3a;
+    text-decoration: none;
+    color: #fff !important;
+  }
+  
+  html[data-theme="dark"] .nerfies-button:hover {
+    background-color: #4a4a4a;
+  }
+
+  .nerfies-button .icon {
+    font-size: 1.2rem;
+  }
+
+  .nerfies-abstract-box {
+    background-color: var(--global-card-bg-color); /* Theme card bg */
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  /* ... rest of styles ... */
+
+    <div class="nerfies-buttons">
+      {% if page.paper %}
+      <a href="{{ page.paper }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="fas fa-file-pdf"></i></span>
+        <span>Paper</span>
+      </a>
+      {% endif %}
+      
+      {% if page.arxiv %}
+      <a href="{{ page.arxiv }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="ai ai-arxiv"></i></span>
+        <span>arXiv</span>
+      </a> 
+      {% endif %}
+
+      {% if page.code %}
+      <a href="{{ page.code }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="fab fa-github"></i></span>
+        <span>Code</span>
+      </a>
+      {% endif %}
+
+      {% if page.data %}
+      <a href="{{ page.data }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="fas fa-database"></i></span>
+        <span>Data</span>
+      </a>
+      {% endif %}
+      
+      {% if page.bibtex %}
+      <a href="#bibtex" class="nerfies-button">
+        <span class="icon"><i class="fas fa-book"></i></span>
+        <span>BibTeX</span>
+      </a>
+      {% endif %}
+    </div>
+
+  .nerfies-section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .nerfies-content {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    text-align: justify;
+  }
+  
+  .nerfies-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .nerfies-bibtex {
+    background-color: var(--global-code-bg-color); /* Theme code bg */
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    border: 1px solid var(--global-divider-color);
+  }
+
+  /* Table Styling */
+  .nerfies-content table {
+    margin: 2rem auto !important;
+    border-collapse: collapse;
+    width: 80%; /* Or auto with max-width */
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    color: var(--global-text-color);
+  }
+  
+  .nerfies-content th, .nerfies-content td {
+    padding: 12px 15px;
+    text-align: center; /* Center cell content specifically for the comparison table */
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+  
+  .nerfies-content th {
+    background-color: var(--global-code-bg-color); /* Adaptive light/dark bg */
+    font-weight: 600;
+    color: var(--global-text-color);
+  }
+
+  /* Overriding some default theme styles if necessary */
+  .post {
+    max-width: 100%;
+  }
+</style>
+
+<!-- Force MathJax Configuration -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      tags: 'ams'
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+
+<div class="post nerfies-wrapper">
+  
+  <!-- Hero Section -->
+  <header class="post-header" style="padding-top: 2rem;">
+    <h1 class="nerfies-title">{{ page.title }}</h1>
+    
+    <div class="nerfies-authors">
+      {% if page.authors %}
+        <!-- Assuming authors are a comma-separated string, we can try to split or just render. 
+             If it's just a string, we render it. If structured data is needed later, we can update. 
+             For now, wrapping the whole block in spans might be tricky with just Liquid string, 
+             so we just render the content but style the container. -->
+        {{ page.authors }}
+      {% endif %}
+    </div>
+
+    <div class="nerfies-affiliations">
+      {% if page.affiliations %}
+        {{ page.affiliations }}
+      {% endif %}
+    </div>
+
+    <!-- Venue / Publication Status -->
+    {% if page.venue %}
+    <div style="text-align: center; font-family: 'Aleo', serif; font-weight: 700; font-size: 1.5rem; margin-bottom: 2rem;">
+      {{ page.venue }}
+    </div>
+    {% endif %}
+
+    <div class="nerfies-buttons">
+      {% if page.paper %}
+      <a href="{{ page.paper }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="fas fa-file-pdf"></i></span>
+        <span>Paper</span>
+      </a>
+      {% endif %}
+      
+      {% if page.arxiv %}
+      <a href="{{ page.arxiv }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="ai ai-arxiv"></i></span>
+        <span>arXiv</span>
+      </a> 
+      {% endif %}
+
+      {% if page.code %}
+      <a href="{{ page.code }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="fab fa-github"></i></span>
+        <span>Code</span>
+      </a>
+      {% endif %}
+
+      {% if page.data %}
+      <a href="{{ page.data }}" class="nerfies-button" target="_blank">
+        <span class="icon"><i class="fas fa-database"></i></span>
+        <span>Data</span>
+      </a>
+      {% endif %}
+      
+      {% if page.bibtex %}
+      <a href="#bibtex" class="nerfies-button">
+        <span class="icon"><i class="fas fa-book"></i></span>
+        <span>BibTeX</span>
+      </a>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <article class="nerfies-content">
+    {{ content }}
+  </article>
+
+  <!-- Comments -->
+  {% if site.giscus and page.giscus_comments %}
+    <div style="max-width: 900px; margin: 3rem auto;">
+      {% include giscus.liquid %}
+    </div>
+  {% endif %}
+</div>
