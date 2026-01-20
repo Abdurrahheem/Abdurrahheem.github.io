@@ -12,6 +12,10 @@ bibtex: true
 permalink: /projects/guess-and-guide/
 ---
 
+<div style="text-align: center; margin-bottom: 2rem;">
+  <img src="/assets/img/guess_and_guide/Drawing.jpg" alt="Guess and Guide Overview" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+</div>
+
 ## Abstract
 
 Pretrained diffusion models serve as effective priors for tackling Bayesian inverse problems across domains, from image editing to voice separation and beyond. Current zero-shot methods work by sampling through a chain of posterior distributions, avoiding the need for task-specific retraining. These approaches depend on surrogate likelihoods that demand vector-Jacobian products at each denoising step, creating a substantial computational burden. We introduce a likelihood surrogate that sidesteps this bottleneck entirely. Our method views the guidance process as an optimization procedure that is both simple and efficient to compute, eliminating the need for gradients through the denoiser network. This enables us to handle diverse inverse problems without backpropagation overhead. Experiments confirm that our approach delivers strong consistency with observations and high-quality results across multiple tasks while significantly reducing inference costs, making it the fastest method among competitors.
