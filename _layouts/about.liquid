@@ -38,7 +38,16 @@ layout: default
       </div>
     {% endif %}
 
-    <div class="clearfix">{{ content }}</div>
+    <div
+      class="clearfix"
+      {% if page.diffuse_text %}
+        data-diffuse-text
+        data-diffuse-duration-ms="650"
+        data-diffuse-steps="10"
+      {% endif %}
+    >
+      {{ content }}
+    </div>
 
     <!-- News -->
     {% if page.news and site.announcements.enabled %}
