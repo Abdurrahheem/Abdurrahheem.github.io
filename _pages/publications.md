@@ -77,31 +77,6 @@ _styles: |
     transform: scale(1.035);
   }
 
-  .pub-thumb--placeholder {
-    display: grid;
-    place-items: center;
-    padding: 1rem;
-    color: var(--pub-muted);
-    text-align: center;
-  }
-
-  .pub-thumb__label {
-    display: block;
-    color: var(--global-text-color);
-    font-size: 1.05rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .pub-thumb__meta {
-    display: block;
-    margin-top: 0.35rem;
-    font-size: 0.76rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
   .pub-body {
     flex: 1 1 auto;
     min-width: 0;
@@ -224,11 +199,8 @@ _styles: |
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb pub-thumb--placeholder">
-      <div>
-        <span class="pub-thumb__label">Y-Flow</span>
-        <span class="pub-thumb__meta">ICLR 2026</span>
-      </div>
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/publication_preview/y-shaped-generative-flows.png' | relative_url }}" alt="Y-shaped generative flows preview">
     </div>
     <div class="pub-body">
       <a class="pub-title" href="https://arxiv.org/pdf/2510.11955">Y-shaped Generative Flows (under review)</a>
@@ -241,11 +213,8 @@ _styles: |
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb pub-thumb--placeholder">
-      <div>
-        <span class="pub-thumb__label">GFlowNets</span>
-        <span class="pub-thumb__meta">ICLR 2026</span>
-      </div>
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/publication_preview/cagfn-mrna-generation.png' | relative_url }}" alt="Curriculum-augmented GFlowNets preview">
     </div>
     <div class="pub-body">
       <a class="pub-title" href="https://www.arxiv.org/pdf/2510.03811">Curriculum-Augmented GFlowNets For mRNA Sequence Generation (under review)</a>
@@ -287,11 +256,8 @@ _styles: |
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb pub-thumb--placeholder">
-      <div>
-        <span class="pub-thumb__label">OpenCV</span>
-        <span class="pub-thumb__meta">Blog</span>
-      </div>
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/publication_preview/opencv-chatgpt-cover.jpg' | relative_url }}" alt="OpenCV ChatGPT blog preview">
     </div>
     <div class="pub-body">
       <a class="pub-title" href="https://www.opencv.ai/blog/getting-the-hang-of-opencvs-inner-workings-with-chatgpt">Getting the Hang of OpenCV's Inner Workings with ChatGPT</a>
@@ -304,28 +270,22 @@ _styles: |
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb pub-thumb--placeholder">
-      <div>
-        <span class="pub-thumb__label">Detection</span>
-        <span class="pub-thumb__meta">Blog</span>
-      </div>
+    <div class="pub-thumb">
+      <img src="{{ '/data/images/train-detector/objects-of-different-scales.jpeg' | relative_url }}" alt="Object detection preview">
     </div>
     <div class="pub-body">
-      <a class="pub-title" href="https://abdurrahheem.github.io/algorithm/How-to-Train-Detectors-Properly/">A Recipe to Train Object Detection Models</a>
+      <a class="pub-title" href="{{ '/algorithm/How-to-Train-Detectors-Properly/' | relative_url }}">A Recipe to Train Object Detection Models</a>
       <div class="pub-authors"><strong>Abduragim Shtanchaev</strong></div>
       <div class="pub-venue">Blog, 2021</div>
       <div class="pub-links">
-        <a class="pub-link" href="https://abdurrahheem.github.io/algorithm/How-to-Train-Detectors-Properly/"><i class="fa-solid fa-newspaper"></i>Blog</a>
+        <a class="pub-link" href="{{ '/algorithm/How-to-Train-Detectors-Properly/' | relative_url }}"><i class="fa-solid fa-newspaper"></i>Blog</a>
       </div>
     </div>
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb pub-thumb--placeholder">
-      <div>
-        <span class="pub-thumb__label">Ad Recall</span>
-        <span class="pub-thumb__meta">PsyArXiv</span>
-      </div>
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/publication_preview/ad-recall-prediction.png' | relative_url }}" alt="Ad recall prediction preview">
     </div>
     <div class="pub-body">
       <a class="pub-title" href="https://psyarxiv.com/csv5d/">Multimodal Ad Recall Prediction Based on Viewer's and Ad Features</a>
@@ -352,18 +312,15 @@ _styles: |
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb pub-thumb--placeholder">
-      <div>
-        <span class="pub-thumb__label">SLAM</span>
-        <span class="pub-thumb__meta">Medium</span>
-      </div>
+    <div class="pub-thumb">
+      <img src="{{ '/data/images/camera-trajectory-estimation/trajectory.jpg' | relative_url }}" alt="Camera trajectory preview">
     </div>
     <div class="pub-body">
-      <a class="pub-title" href="https://abduragim.medium.com/camera-trajectory-estimation-7e566494e7d9">Camera Trajectory Estimation</a>
+      <a class="pub-title" href="{{ '/algorithm/Camera-Trajectory-Estimation/' | relative_url }}">Camera Trajectory Estimation</a>
       <div class="pub-authors"><strong>Abduragim Shtanchaev</strong></div>
-      <div class="pub-venue">Medium, 2019</div>
+      <div class="pub-venue">Blog, 2020</div>
       <div class="pub-links">
-        <a class="pub-link" href="https://abduragim.medium.com/camera-trajectory-estimation-7e566494e7d9"><i class="fa-solid fa-newspaper"></i>Blog</a>
+        <a class="pub-link" href="{{ '/algorithm/Camera-Trajectory-Estimation/' | relative_url }}"><i class="fa-solid fa-newspaper"></i>Blog</a>
       </div>
     </div>
   </article>
