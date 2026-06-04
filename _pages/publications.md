@@ -187,13 +187,13 @@ _styles: |
       <img src="{{ '/assets/img/guess_and_guide/Drawing.jpg' | relative_url }}" alt="Guess and Guide preview">
     </div>
     <div class="pub-body">
-      <a class="pub-title" href="{{ '/projects/guess-and-guide/' | relative_url }}">Guess and Guide Zero-Shot Diffusion Guidance (under review)</a>
-      <div class="pub-authors"><strong>Abduragim Shtanchaev</strong>, Albina Ilina, Yazid Janati, Badr Maufad, Martin Takac, Eric Moulines</div>
-      <div class="pub-venue">CVPR 2026</div>
+      <a class="pub-title" href="{{ '/projects/guess-and-guide/' | relative_url }}">Guess &amp; Guide: Gradient-Free Zero-Shot Diffusion Guidance</a>
+      <div class="pub-authors"><strong>Abduragim Shtanchaev</strong>, Albina Ilina, Yazid Janati, Arip Asadulaev, Martin Takac, Eric Moulines</div>
+      <div class="pub-venue">ReALM-GEN 2026 / arXiv</div>
       <div class="pub-links">
         <a class="pub-link" href="{{ '/projects/guess-and-guide/' | relative_url }}"><i class="fa-solid fa-globe"></i>Project</a>
-        <span class="pub-link pub-link--disabled"><i class="fa-solid fa-file-pdf"></i>Paper</span>
-        <span class="pub-link pub-link--disabled"><i class="fa-brands fa-github"></i>Code</span>
+        <a class="pub-link" href="https://arxiv.org/pdf/2603.07860"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+        <a class="pub-link" href="https://arxiv.org/abs/2603.07860"><i class="fa-solid fa-book-open"></i>arXiv</a>
       </div>
     </div>
   </article>

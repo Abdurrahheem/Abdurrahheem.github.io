@@ -115,45 +115,6 @@ layout: default
     margin-bottom: 3rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
-  
-  /* ... rest of styles ... */
-
-    <div class="nerfies-buttons">
-      {% if page.paper %}
-      <a href="{{ page.paper }}" class="nerfies-button" target="_blank">
-        <span class="icon"><i class="fas fa-file-pdf"></i></span>
-        <span>Paper</span>
-      </a>
-      {% endif %}
-      
-      {% if page.arxiv %}
-      <a href="{{ page.arxiv }}" class="nerfies-button" target="_blank">
-        <span class="icon"><i class="ai ai-arxiv"></i></span>
-        <span>arXiv</span>
-      </a> 
-      {% endif %}
-
-      {% if page.code %}
-      <a href="{{ page.code }}" class="nerfies-button" target="_blank">
-        <span class="icon"><i class="fab fa-github"></i></span>
-        <span>Code</span>
-      </a>
-      {% endif %}
-
-      {% if page.data %}
-      <a href="{{ page.data }}" class="nerfies-button" target="_blank">
-        <span class="icon"><i class="fas fa-database"></i></span>
-        <span>Data</span>
-      </a>
-      {% endif %}
-      
-      {% if page.bibtex %}
-      <a href="#bibtex" class="nerfies-button">
-        <span class="icon"><i class="fas fa-book"></i></span>
-        <span>BibTeX</span>
-      </a>
-      {% endif %}
-    </div>
 
   .nerfies-section-title {
     text-align: center;
@@ -171,6 +132,113 @@ layout: default
   
   .nerfies-content p {
     margin-bottom: 1.5rem;
+  }
+
+  .gng-examples {
+    width: min(1180px, calc(100vw - 3rem));
+    max-width: none;
+    margin: 2.5rem 50% 3rem;
+    transform: translateX(-50%);
+    text-align: left;
+  }
+
+  .gng-examples h2 {
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .gng-examples-intro {
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    color: var(--global-text-color-light);
+    text-align: center;
+  }
+
+  .gng-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .gng-comparison-item {
+    margin: 0;
+  }
+
+  .gng-comparison-item img-comparison-slider {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--global-code-bg-color);
+    --divider-width: 2px;
+    --divider-color: #fff;
+    --default-handle-width: 44px;
+  }
+
+  .gng-comparison-panel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  .gng-comparison-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gng-comparison-panel figcaption {
+    position: absolute;
+    top: 0.55rem;
+    z-index: 2;
+    padding: 0.28rem 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.86);
+    color: #202124;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .gng-comparison-before figcaption {
+    left: 0.55rem;
+  }
+
+  .gng-comparison-after figcaption {
+    right: 0.55rem;
+  }
+
+  .gng-task-caption {
+    margin-top: 0.55rem;
+    color: var(--global-text-color-light);
+    font-size: 0.9rem;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .gng-comparison-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .gng-examples {
+      width: min(420px, calc(100vw - 1.5rem));
+    }
+
+    .gng-comparison-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gng-comparison-panel figcaption {
+      font-size: 0.68rem;
+    }
   }
 
   .nerfies-bibtex {
@@ -202,6 +270,35 @@ layout: default
     background-color: var(--global-code-bg-color); /* Adaptive light/dark bg */
     font-weight: 600;
     color: var(--global-text-color);
+  }
+
+  .nerfies-content .gng-results-table-wrap {
+    width: min(960px, calc(100vw - 3rem));
+    margin: 2rem 50%;
+    transform: translateX(-50%);
+    overflow-x: auto;
+  }
+
+  .nerfies-content .gng-results-table {
+    width: 100%;
+    min-width: 700px;
+    margin: 0 !important;
+  }
+
+  .nerfies-content .gng-results-table th,
+  .nerfies-content .gng-results-table td {
+    white-space: nowrap;
+  }
+
+  .nerfies-content .gng-results-table th:first-child,
+  .nerfies-content .gng-results-table td:first-child {
+    text-align: left;
+  }
+
+  @media (max-width: 560px) {
+    .nerfies-content .gng-results-table-wrap {
+      width: calc(100vw - 1.5rem);
+    }
   }
 
   /* Overriding some default theme styles if necessary */
