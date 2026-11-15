@@ -183,13 +183,51 @@ _styles: |
   <h2 class="pubs-heading">Selected Publications</h2>
 
   <article class="pub-card">
+    <div class="pub-thumb"></div>
+    <div class="pub-body">
+      <a class="pub-title" href="https://arxiv.org/pdf/2609.33171">Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems</a>
+      <div class="pub-authors"><strong>Abduragim Shtanchaev</strong>, Arip Asadulaev, Luiza Labazanova, Aidar Alimbayev, Karim Salta, Eric Moulines</div>
+      <div class="pub-venue">ICLR 2027 (under review) / NeurIPS 2026 BeNTo Workshop</div>
+      <div class="pub-links">
+        <a class="pub-link" href="https://arxiv.org/pdf/2609.33171"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="pub-card">
     <div class="pub-thumb">
-      <img src="{{ '/assets/img/guess_and_guide/Drawing.jpg' | relative_url }}" alt="Guess and Guide preview">
+      <img src="{{ '/assets/img/publication_preview/y-shaped-generative-flows.png' | relative_url }}" alt="Y-shaped generative flows preview">
     </div>
     <div class="pub-body">
-      <a class="pub-title" href="{{ '/projects/guess-and-guide/' | relative_url }}">Guess &amp; Guide: Gradient-Free Zero-Shot Diffusion Guidance</a>
+      <a class="pub-title" href="https://arxiv.org/pdf/2510.11955">Y-shaped Generative Flows</a>
+      <div class="pub-authors">Arip Asadulaev, Semyon Semenov*, <strong>Abduragim Shtanchaev</strong>*, Eric Moulines, Fakhri Karray, Martin Takac</div>
+      <div class="pub-venue">ICLR 2027 (under review)</div>
+      <div class="pub-links">
+        <a class="pub-link" href="https://arxiv.org/pdf/2510.11955"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="pub-card">
+    <div class="pub-thumb"></div>
+    <div class="pub-body">
+      <a class="pub-title" href="https://arxiv.org/pdf/2605.23395">Convex Compositional Reasoning Models</a>
+      <div class="pub-authors">Meir Roketlishvili, Semyon Semenov, ..., <strong>Abduragim Shtanchaev</strong>, ..., Martin Takac, Arip Asadulaev</div>
+      <div class="pub-venue">NeurIPS 2026</div>
+      <div class="pub-links">
+        <a class="pub-link" href="https://arxiv.org/pdf/2605.23395"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="pub-card">
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/guess_and_guide/Drawing.jpg' | relative_url }}" alt="Sparse Scheduled Diffusion Guidance preview">
+    </div>
+    <div class="pub-body">
+      <a class="pub-title" href="{{ '/projects/guess-and-guide/' | relative_url }}">Sparse Scheduled Diffusion Guidance for Inverse Problems</a>
       <div class="pub-authors"><strong>Abduragim Shtanchaev</strong>, Albina Ilina, Yazid Janati, Arip Asadulaev, Martin Takac, Eric Moulines</div>
-      <div class="pub-venue">ReALM-GEN 2026 / arXiv</div>
+      <div class="pub-venue">ICML 2026</div>
       <div class="pub-links">
         <a class="pub-link" href="{{ '/projects/guess-and-guide/' | relative_url }}"><i class="fa-solid fa-globe"></i>Project</a>
         <a class="pub-link" href="https://arxiv.org/pdf/2603.07860"><i class="fa-solid fa-file-pdf"></i>Paper</a>
@@ -200,26 +238,12 @@ _styles: |
 
   <article class="pub-card">
     <div class="pub-thumb">
-      <img src="{{ '/assets/img/publication_preview/y-shaped-generative-flows.png' | relative_url }}" alt="Y-shaped generative flows preview">
-    </div>
-    <div class="pub-body">
-      <a class="pub-title" href="https://arxiv.org/pdf/2510.11955">Y-shaped Generative Flows (under review)</a>
-      <div class="pub-authors">Arip Asadulaev, Semyon Semenov*, <strong>Abduragim Shtanchaev</strong>*, Eric Moulines, Fakhri Karray, Martin Takac</div>
-      <div class="pub-venue">ICLR 2026</div>
-      <div class="pub-links">
-        <a class="pub-link" href="https://arxiv.org/pdf/2510.11955"><i class="fa-solid fa-file-pdf"></i>Paper</a>
-      </div>
-    </div>
-  </article>
-
-  <article class="pub-card">
-    <div class="pub-thumb">
       <img src="{{ '/assets/img/publication_preview/cagfn-mrna-generation.png' | relative_url }}" alt="Curriculum-augmented GFlowNets preview">
     </div>
     <div class="pub-body">
-      <a class="pub-title" href="https://www.arxiv.org/pdf/2510.03811">Curriculum-Augmented GFlowNets For mRNA Sequence Generation (under review)</a>
+      <a class="pub-title" href="https://www.arxiv.org/pdf/2510.03811">Curriculum-Augmented GFlowNets For mRNA Sequence Generation</a>
       <div class="pub-authors">Aya Laajil, <strong>Abduragim Shtanchaev</strong>, Sajan Muhammad, Eric Moulines, Salem Lahlou</div>
-      <div class="pub-venue">ICLR 2026</div>
+      <div class="pub-venue">NeurIPS 2026</div>
       <div class="pub-links">
         <a class="pub-link" href="https://www.arxiv.org/pdf/2510.03811"><i class="fa-solid fa-file-pdf"></i>Paper</a>
       </div>
