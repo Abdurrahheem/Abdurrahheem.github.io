@@ -183,7 +183,9 @@ _styles: |
   <h2 class="pubs-heading">Selected Publications</h2>
 
   <article class="pub-card">
-    <div class="pub-thumb"></div>
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/publication_preview/perturb-and-solve.png' | relative_url }}" alt="Perturb-and-Solve preview">
+    </div>
     <div class="pub-body">
       <a class="pub-title" href="https://arxiv.org/pdf/2609.33171">Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems</a>
       <div class="pub-authors"><strong>Abduragim Shtanchaev</strong>, Arip Asadulaev, Luiza Labazanova, Aidar Alimbayev, Karim Salta, Eric Moulines</div>
@@ -209,7 +211,9 @@ _styles: |
   </article>
 
   <article class="pub-card">
-    <div class="pub-thumb"></div>
+    <div class="pub-thumb">
+      <img src="{{ '/assets/img/publication_preview/convex-compositional-reasoning.png' | relative_url }}" alt="Convex Compositional Reasoning Models preview">
+    </div>
     <div class="pub-body">
       <a class="pub-title" href="https://arxiv.org/pdf/2605.23395">Convex Compositional Reasoning Models</a>
       <div class="pub-authors">Meir Roketlishvili, Semyon Semenov, ..., <strong>Abduragim Shtanchaev</strong>, ..., Martin Takac, Arip Asadulaev</div>
