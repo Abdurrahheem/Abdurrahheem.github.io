@@ -187,11 +187,12 @@ _styles: |
       <img src="{{ '/assets/img/publication_preview/perturb-and-solve.png' | relative_url }}" alt="Perturb-and-Solve preview">
     </div>
     <div class="pub-body">
-      <a class="pub-title" href="https://arxiv.org/pdf/2609.33171">Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems</a>
+      <a class="pub-title" href="{{ '/projects/paseo/' | relative_url }}">Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems</a>
       <div class="pub-authors"><strong>Abduragim Shtanchaev</strong>, Arip Asadulaev, Luiza Labazanova, Aidar Alimbayev, Karim Salta, Eric Moulines</div>
       <div class="pub-venue">ICLR 2027 (under review) / NeurIPS 2026 BeNTo Workshop</div>
       <div class="pub-links">
         <a class="pub-link" href="https://arxiv.org/pdf/2609.33171"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+        <a class="pub-link" href="{{ '/projects/paseo/' | relative_url }}"><i class="fa-solid fa-globe"></i>Project</a>
       </div>
     </div>
   </article>

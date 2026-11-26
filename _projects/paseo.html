@@ -1,0 +1,160 @@
+---
+layout: project_paseo
+title: "PASEO: Perturb-and-Solve for Latent Diffusion Inverse Problems"
+description: "Perturb-and-Solve: efficient learned-operator conditioning for latent diffusion inverse problems, without back-propagating through the diffusion network."
+permalink: /projects/paseo/
+---
+
+<!-- hero: drag the divider between the blurred measurement and the PASEO reconstruction -->
+<section class="ps-hero ps-bleed">
+  <div class="ps-cmp" data-lean="0.22" data-knob="0.32" data-intro>
+    <img src="{{ '/assets/img/paseo/blur_paseo.jpg' | relative_url }}" alt="PASEO reconstruction of a blurred photograph of surfboards">
+    <img class="ps-cmp-top" src="{{ '/assets/img/paseo/blur_y.jpg' | relative_url }}" alt="The blurred measurement">
+    <div class="ps-vig"></div>
+    <div class="ps-fade"></div>
+    <svg class="ps-cmp-line" aria-hidden="true"><line x1="50%" y1="0" x2="50%" y2="100%"/></svg>
+    <button class="ps-cmp-knob" role="slider" aria-label="Move the divider between measurement and reconstruction" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 10l-5-4.2v8.4zM12 10l5-4.2v8.4z"/></svg>
+    </button>
+    <!-- the labels obey the divider too: blurred on the measurement side, sharp on the reconstruction side -->
+    <div class="ps-labs blur ps-side-l" aria-hidden="true">
+      <div class="ps-lab l"><small class="ps-mono"><i class="v" style="text-transform:none">y</i> &nbsp;/&nbsp; what we observe</small><strong>Measurement</strong></div>
+      <div class="ps-lab r"><small class="ps-mono">PASEO &nbsp;/&nbsp; what we recover</small><strong>Reconstruction</strong></div>
+    </div>
+    <div class="ps-labs ps-side-r">
+      <div class="ps-lab l"><small class="ps-mono"><i class="v" style="text-transform:none">y</i> &nbsp;/&nbsp; what we observe</small><strong>Measurement</strong></div>
+      <div class="ps-lab r"><small class="ps-mono">PASEO &nbsp;/&nbsp; what we recover</small><strong>Reconstruction</strong></div>
+    </div>
+    <p class="ps-name" aria-hidden="true"><i>P</i><i class="o">A</i><i>S</i><i>E</i><i>O</i></p>
+  </div>
+</section>
+
+<header class="ps-head">
+  <h1 class="ps-title"><b>P</b>erturb-<b>A</b>nd-<b>S</b>olve: <b>E</b>fficient Learned-<b>O</b>perator Conditioning for Latent Diffusion Inverse Problems</h1>
+  <div class="ps-authors ps-mono">
+    <span>Abduragim Shtanchaev</span> <span>Arip Asadulaev</span> <span>Luiza Labazanova</span> <span>Aidar Alimbayev</span> <span>Karim Salta</span> <span>Eric Moulines</span> <span>Martin Tak&aacute;&ccaron;</span>
+  </div>
+  <div class="ps-aff ps-mono">Mohamed bin Zayed University of Artificial Intelligence</div>
+  <nav class="ps-links ps-mono" aria-label="Paper links">
+    <a class="fill" href="https://arxiv.org/pdf/2609.33171" target="_blank" rel="noopener">Paper</a>
+    <a href="https://arxiv.org/abs/2609.33171" target="_blank" rel="noopener">arXiv</a>
+    <a href="#bibtex">BibTeX</a>
+    <span>Code &nbsp;/&nbsp; soon</span>
+  </nav>
+</header>
+
+<section class="ps-sec">
+  <h2 class="ps-kicker ps-mono">In short</h2>
+  <p class="ps-lede">A small learned network degrades the diffusion model's prediction directly in latent space. PASEO conditions on it with <b>no back-propagation through the diffusion network</b>.</p>
+  <p class="ps-body">Fast latent solvers handle only a fixed set of degradations. General ones are slow, because every step differentiates through the denoiser. PASEO keeps the generality and drops that cost: one solver covers super-resolution, deblurring, inpainting, JPEG restoration and nonlinear blur.</p>
+</section>
+
+<section class="ps-sec ps-wide">
+  <h2 class="ps-kicker ps-mono">The idea <span>/</span> five equations</h2>
+  <div class="ps-steps">
+    <div class="ps-step prob">
+      <h3 class="ps-mono">01 <span>/</span> The gradient problem</h3>
+      <div class="ps-eq"><img src="{{ '/assets/img/paseo/eq/e1.svg' | relative_url }}" style="width:27rem" alt="The guidance likelihood is a Gaussian centred at the learned operator applied to the denoiser's clean estimate of x_t."></div>
+      <p><i class="v">x<sub>t</sub></i> sits <b class="bad">inside the denoiser</b>: every step back-propagates through it.</p>
+    </div>
+    <div class="ps-step">
+      <h3 class="ps-mono">02 <span>/</span> The way out: a proxy</h3>
+      <div class="ps-eq"><img src="{{ '/assets/img/paseo/eq/e2.svg' | relative_url }}" style="width:35rem" alt="The clean estimate is x_t minus sigma_t times the noise prediction, over alpha_t. Replacing the noise prediction by a constant gives z_0."></div>
+      <p>Noise prediction at a proxy state, as in DING: it becomes <b class="good">a constant</b>.</p>
+      <div class="ps-eq" style="min-height:0;margin:.9rem 0 0"><img src="{{ '/assets/img/paseo/eq/e2b.svg' | relative_url }}" style="width:24rem" alt="The constant is the noise prediction at the proxy state, so z_0 follows a Gaussian with mean mu_z and variance eta_z squared."></div>
+    </div>
+    <div class="ps-step prob">
+      <h3 class="ps-mono">03 <span>/</span> A learned operator is not Gaussian</h3>
+      <div class="ps-eq"><img src="{{ '/assets/img/paseo/eq/e3.svg' | relative_url }}" style="width:24.5rem" alt="The likelihood of the measurement given z_0 is a Gaussian centred at the learned operator applied to z_0."></div>
+      <p>The operator is <b class="bad">a neural network</b>, so the posterior has no closed form.</p>
+    </div>
+    <div class="ps-step">
+      <h3 class="ps-mono">04 <span>/</span> Linearize the operator, repeatedly</h3>
+      <div class="ps-eq"><img src="{{ '/assets/img/paseo/eq/e4.svg' | relative_url }}" style="width:26rem" alt="The operator at z_0 is approximated by its value at the current iterate plus the Jacobian times the difference."></div>
+      <p>Only <b class="good">Jacobian-vector products</b> are needed, never the Jacobian itself.</p>
+    </div>
+    <div class="ps-final">
+      <h3 class="ps-mono" style="font-size:.76rem;font-weight:400;color:var(--ps-good);margin:0">05 <span style="color:var(--ps-dim)">/</span> Perturb, then solve</h3>
+      <div class="row">
+        <img src="{{ '/assets/img/paseo/eq/e5.svg' | relative_url }}" style="width:34rem" alt="The update: z_0 star equals (I minus K_j J_j) times the perturbed prior mean, plus K_j times the perturbed measurement minus c_j.">
+        <div class="defs">
+          <img src="{{ '/assets/img/paseo/eq/e5a.svg' | relative_url }}" style="width:31rem" alt="The perturbed prior mean is mu_z plus eta_z times noise; the perturbed measurement is y_z plus r times noise.">
+          <p class="leg"><i class="v">K<sub>j</sub></i>&ensp;Gaussian posterior gain &nbsp;·&nbsp; <i class="v"><b>c</b><sub>j</sub></i>&ensp;linearization offset</p>
+        </div>
+      </div>
+      <p style="color:var(--ps-soft);margin:0">Noise on <b class="good" style="font-weight:600">the prior mean and the measurement</b>, then one linear solve: <b style="color:var(--ps-ink);font-weight:600">a posterior sample for the price of the mean.</b></p>
+    </div>
+  </div>
+</section>
+
+<section class="ps-sec ps-wide">
+  <h2 class="ps-kicker ps-mono">Reconstructions <span>/</span> drag the dividers</h2>
+  <div class="ps-pick ps-src" role="group" aria-label="Compare PASEO against">
+    <span class="ps-mono">PASEO against</span>
+    <button type="button" data-src="y" aria-pressed="true">Measurement</button>
+    <button type="button" data-src="silo" aria-pressed="false">SILO</button>
+    <button type="button" data-src="x" aria-pressed="false">Reference</button>
+  </div>
+  <div class="ps-frames">
+    {% assign tasks = "sr8|Super-resolution ×8|SR ×8,blur|Gaussian deblurring|Deblur,inpaint|Box inpainting|Inpaint" | split: "," %}
+    {% for item in tasks %}
+      {% assign t = item | split: "|" %}
+      <figure class="ps-frame" data-task="{{ t[1] }}">
+        <div class="ps-cmp" data-lean="0.2">
+          <img src="{{ '/assets/img/paseo/' | append: t[0] | append: '_paseo.jpg' | relative_url }}" alt="PASEO reconstruction, {{ t[1] }}" loading="lazy">
+          <img class="ps-cmp-top" src="{{ '/assets/img/paseo/' | append: t[0] | append: '_y.jpg' | relative_url }}" data-base="{{ '/assets/img/paseo/' | append: t[0] | append: '_' | relative_url }}" alt="Measurement, {{ t[1] }}" loading="lazy">
+          <svg class="ps-cmp-line" aria-hidden="true"><line x1="50%" y1="0" x2="50%" y2="100%"/></svg>
+          <button class="ps-cmp-knob" role="slider" aria-label="Move the divider, {{ t[1] }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 10l-5-4.2v8.4zM12 10l5-4.2v8.4z"/></svg>
+          </button>
+          <span class="ps-tag l ps-mono">Measurement</span><span class="ps-tag r ps-mono">PASEO</span>
+        </div>
+        <figcaption><b>{{ t[2] }}</b><span class="ps-mono">0{{ forloop.index }} / {{ t[1] }}</span></figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+  <p class="ps-note">COCO images, SD3.5-medium. SILO's step size was tuned on these three images. Images are shown as produced, saved as high-quality JPEG for the web.</p>
+</section>
+
+<section class="ps-sec">
+  <h2 class="ps-kicker ps-mono">Results <span>/</span> FFHQ, SD3.5-medium</h2>
+  <div class="ps-res">
+    <div>
+      <table class="ps-table">
+        <tr><th>LPIPS &darr;, seconds &darr;</th><th>PASEO</th><th>SILO</th></tr>
+        <tr><td>SR &times;4</td><td class="us"><b>0.182</b><span>10.6 s</span></td><td class="them"><b>0.303</b><span>20 s</span></td></tr>
+        <tr><td>SR &times;8</td><td class="us"><b>0.330</b><span>8.8 s</span></td><td class="them"><b>0.501</b><span>20 s</span></td></tr>
+        <tr><td>Gaussian blur</td><td class="us"><b>0.200</b><span>8.6 s</span></td><td class="them"><b>0.399</b><span>20 s</span></td></tr>
+        <tr><td>Inpainting</td><td class="us"><b>0.118</b><span>13.6 s</span></td><td class="them"><b>0.430</b><span>20 s</span></td></tr>
+        <tr><td>JPEG</td><td class="us"><b>0.350</b><span>13.9 s</span></td><td class="them"><b>0.503</b><span>20 s</span></td></tr>
+        <tr><td>Nonlinear blur</td><td class="us"><b>0.130</b><span>9.2 s</span></td><td class="them"><b>0.359</b><span>26.4 s</span></td></tr>
+        <tr class="mem"><td>Peak memory</td><td class="us"><b>16.8 GB</b></td><td class="them"><b>21.2 GB</b></td></tr>
+      </table>
+      <p class="ps-note">SILO is our SD3.5 extension, tuned per task, at 79 denoiser evaluations; PASEO uses 53. Nonlinear blur memory: 17.2 vs 39.9 GB.</p>
+    </div>
+    <div>
+      <div class="ps-stats">
+        <div class="ps-stat"><div class="n">&minus;48%</div><div class="ps-mono l">LPIPS vs SILO, mean of six tasks</div></div>
+        <div class="ps-stat"><div class="n">2.9&times;</div><div class="ps-mono l">faster than SILO, up to</div></div>
+        <div class="ps-stat"><div class="n">&minus;21%</div><div class="ps-mono l">peak memory vs SILO</div></div>
+      </div>
+      <p class="ps-note">SILO is the fastest baseline on five of the six tasks. ReSample, PSLD, GML-DPS, LDPS, DiffPIR and NDTM take roughly 3&times; to 30&times; as long as PASEO. Full tables are in the paper.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ps-sec" id="bibtex">
+  <h2 class="ps-kicker ps-mono">Citation</h2>
+  <div class="ps-bib">
+    <button type="button">Copy</button>
+<pre>@article{shtanchaev2026perturb,
+  title   = {Perturb-and-Solve: Efficient Learned-Operator Conditioning
+             for Latent Diffusion Inverse Problems},
+  author  = {Shtanchaev, Abduragim and Asadulaev, Arip and Labazanova, Luiza
+             and Alimbayev, Aidar and Salta, Karim and Moulines, Eric},
+  journal = {arXiv preprint arXiv:2609.33171},
+  year    = {2026}
+}</pre>
+  </div>
+  <p class="ps-end ps-mono">Presented at the NeurIPS 2026 STODY and BeNTo workshops, Sydney</p>
+</section>
