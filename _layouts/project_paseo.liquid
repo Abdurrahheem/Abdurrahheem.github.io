@@ -66,11 +66,22 @@ layout: default
   .ps-labs { position: absolute; inset: 0; pointer-events: none; }
   .ps-labs.blur .ps-lab strong { filter: blur(.055em); }
   .ps-lab.r strong { color: var(--ps-good); }
+  /* The name: five letter shapes, each on its own spring. P, S, E and O turn into glass once their layers have loaded. */
   .ps-name { z-index: 2; position: absolute; left: clamp(.7rem, 3.4vw, 3rem); bottom: .03em; margin: 0; pointer-events: none;
-    font-family: "Barlow Condensed", sans-serif; font-weight: 800; text-transform: uppercase; color: var(--ps-ink);
-    font-size: clamp(6.4rem, 41vw, 31rem); line-height: .8; letter-spacing: -.015em; }
-  .ps-name i { display: inline-block; font-style: normal; transform-origin: 50% 80%; will-change: transform; }
-  .ps-name i.o { color: transparent; -webkit-text-stroke: .03em var(--ps-good); }
+    display: flex; font-size: clamp(6.4rem, 41vw, 31rem); line-height: .8; }
+  .ps-name i { position: relative; flex: none; width: calc(var(--a) * 1em); height: .8em; margin-right: -.015em;
+    transform-origin: 50% 80%; will-change: transform; }
+  /* every layer of a letter shares one frame: .12em around the letter's box, baseline on the box's bottom edge */
+  .ps-hero .ps-name i > * { position: absolute; inset: -.12em auto auto -.12em; width: calc(100% + .24em); height: 1.04em;
+    object-fit: fill; }
+  .ps-name .g-see, .ps-name .g-top { display: none; }
+  .ps-name.glass .g-see, .ps-name.glass .g-top { display: block; }
+  .ps-name.glass i[data-g] > .g-flat { display: none; }
+  .g-see { overflow: hidden; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+  /* the hero again, as seen through the glass: it stays where the hero is while the letter moves over it */
+  .g-scene { position: absolute; }
+  .g-scene .g-fade { position: absolute; left: 0; right: 0; bottom: -1px; height: 52%;
+    background: linear-gradient(to bottom, rgba(10,11,14,0) 0%, rgba(10,11,14,.8) 58%, #0A0B0E 100%); }
 
   /* ---------- title block ---------- */
   .ps-head { padding: clamp(1.6rem, 4vw, 2.6rem) 0 0; }
@@ -189,9 +200,39 @@ layout: default
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var all = [];
 
+    // Glass letters. Each letter gets the hero again (frosted copies of both images, the fade, the divider),
+    // cut to the letter's shape, and on top a baked layer of tint, inner glow, highlights and rim.
+    // The letters stay flat until every layer has loaded, and for good where masks are unsupported.
+    function buildGlass(name) {
+      var css = window.CSS && CSS.supports ? CSS : null, dir = name.dataset.glass, made = [];
+      if (!dir || !css || !(css.supports("mask-image", "none") || css.supports("-webkit-mask-image", "none"))) return made;
+      var waiting = 0, failed = false;
+      function watch(img) {
+        waiting++;
+        function done(ok) { if (!ok) failed = true; if (--waiting === 0 && !failed) name.classList.add("glass"); }
+        if (img.complete) window.setTimeout(function () { done(img.naturalWidth > 0); }, 0);
+        else { img.addEventListener("load", function () { done(true); }); img.addEventListener("error", function () { done(false); }); }
+      }
+      name.querySelectorAll("i[data-g]").forEach(function (node) {
+        var flat = node.querySelector(".g-flat"), see = document.createElement("span");
+        see.className = "g-see";
+        see.style.cssText = "-webkit-mask-image:url(" + flat.src + ");mask-image:url(" + flat.src + ")";
+        see.innerHTML = '<span class="g-scene"><img src="' + dir + 'blur_paseo.jpg" alt="">' +
+          '<img class="ps-side-l" src="' + dir + 'blur_y.jpg" alt=""><span class="g-fade"></span>' +
+          '<svg class="ps-cmp-line"><line x1="50%" y1="0" x2="50%" y2="100%"/></svg></span>';
+        var layer = document.createElement("img");
+        layer.className = "g-top"; layer.alt = ""; layer.src = dir + node.dataset.g + ".webp";
+        node.appendChild(see); node.appendChild(layer);
+        see.querySelectorAll("img").forEach(watch); watch(layer); watch(flat);
+        made.push(node.glass = { node: node, scene: see.firstChild, rest: "", moving: false });
+      });
+      return made;
+    }
+
     document.querySelectorAll(".ps-cmp").forEach(function (el, index) {
+      var name = el.querySelector(".ps-name"), glass = name ? buildGlass(name) : [];
       var top = el.querySelector(".ps-cmp-top");
-      var line = el.querySelector(".ps-cmp-line line");
+      var lines = el.querySelectorAll(".ps-cmp-line line");
       var knob = el.querySelector(".ps-cmp-knob");
       var sideL = el.querySelectorAll(".ps-side-l"), sideR = el.querySelectorAll(".ps-side-r");
       var lean = parseFloat(el.dataset.lean || "0.22");   // horizontal run of the divider, as a fraction of the height
@@ -206,15 +247,29 @@ layout: default
         top.style.clipPath = left;
         sideL.forEach(function (n) { n.style.clipPath = left; });
         sideR.forEach(function (n) { n.style.clipPath = right; });
-        line.setAttribute("x1", a + "%"); line.setAttribute("x2", b + "%");
+        lines.forEach(function (n) { n.setAttribute("x1", a + "%"); n.setAttribute("x2", b + "%"); });
         knob.style.left = (a + (b - a) * knobY) + "%"; knob.style.top = (knobY * 100) + "%";
         knob.setAttribute("aria-valuenow", Math.round(state.pos * 100));
       }
       // The letters of the name are on springs: the divider knocks them as it sweeps past.
-      var name = el.querySelector(".ps-name"), letters = [], lastMove = 0;
+      var letters = [], lastMove = 0;
       if (name && !reduce) name.querySelectorAll("i").forEach(function (node, i) {
         letters.push({ node: node, x: 0, vx: 0, y: 0, vy: 0, r: 0, vr: 0, k: 1 + 0.22 * Math.sin(i * 2.4) });
       });
+      // Lay each glass letter's scene exactly over the hero, magnified 4% about the letter's centre.
+      function place() {
+        if (!glass.length) return;
+        var pad = 0.12 * parseFloat(getComputedStyle(name).fontSize);
+        glass.forEach(function (g) {
+          var x = name.offsetLeft + g.node.offsetLeft, y = name.offsetTop + g.node.offsetTop;
+          var w = g.node.offsetWidth, h = g.node.offsetHeight, c = g.scene.style;
+          c.left = (pad - x) + "px"; c.top = (pad - y) + "px";
+          c.width = el.clientWidth + "px"; c.height = el.clientHeight + "px";
+          c.transformOrigin = (x + w / 2) + "px " + (y + 0.8 * h) + "px";   // the point the letter swings about
+          g.rest = "translate(0," + (-0.3 * h) + "px) scale(1.04) translate(0," + (0.3 * h) + "px)";
+          if (!g.moving) c.transform = g.rest;
+        });
+      }
       function knock(dx, now) {
         var dt = Math.min(0.1, Math.max(0.008, (now - lastMove) / 1000)); lastMove = now;
         var speed = Math.max(0.1, Math.min(1, Math.abs(dx / dt) / 700));   // slow drift barely moves them
@@ -236,6 +291,12 @@ layout: default
           var still = Math.abs(L.x) + Math.abs(L.y) + Math.abs(L.r) + Math.abs(L.vx) / 60 + Math.abs(L.vr) / 60 < 0.02;
           L.node.style.transform = still ? "" :
             "translate(" + L.x.toFixed(2) + "px," + L.y.toFixed(2) + "px) rotate(" + L.r.toFixed(2) + "deg)";
+          var g = L.node.glass;   // undo the letter's motion for what is seen through it
+          if (g && (g.moving || !still)) {
+            g.moving = !still;
+            g.scene.style.transform = (still ? "" :
+              "rotate(" + (-L.r).toFixed(2) + "deg) translate(" + (-L.x).toFixed(2) + "px," + (-L.y).toFixed(2) + "px) ") + g.rest;
+          }
         });
       };
       function set(p) {
@@ -263,7 +324,7 @@ layout: default
         var step = e.key === "ArrowLeft" ? -0.04 : e.key === "ArrowRight" ? 0.04 : 0;
         if (step) { state.touched = true; set(state.pos + step); e.preventDefault(); }
       });
-      window.addEventListener("resize", draw);
+      window.addEventListener("resize", function () { draw(); place(); });
 
       // Until someone touches it, the divider develops in once and then drifts slowly.
       state.tick = function (now) {
@@ -278,6 +339,7 @@ layout: default
         new IntersectionObserver(function (entries) { state.visible = entries[0].isIntersecting; }, { threshold: 0.15 }).observe(el);
       } else { state.visible = true; }
 
+      place();
       set(reduce || !state.intro ? 0.5 : 0.94);
       state.ready = true;
       all.push(state);
