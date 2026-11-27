@@ -1,0 +1,219 @@
+---
+layout: project_spin
+title: "Spin: Sparse Scheduled Diffusion Guidance for Inverse Problems"
+authors: "Abduragim Shtanchaev<sup>1</sup>, Albina Ilina<sup>1</sup>, Yazid Janati<sup>2</sup>, Arip Asadulaev<sup>1</sup>, Martin Takáč<sup>1</sup>, Eric Moulines<sup>1,2</sup>"
+affiliations: "<sup>1</sup>Mohamed bin Zayed University of Artificial Intelligence &nbsp;&nbsp;&nbsp;&nbsp; <sup>2</sup>École Polytechnique"
+venue: "ReALM-GEN 2026 (ICLR Workshop) / arXiv:2603.07860"
+description: "Spin avoids starting posterior sampling from pure noise: a warm start at an intermediate timestep, then sparse scheduled guidance, without backpropagation through the denoiser or decoder."
+paper: "https://arxiv.org/pdf/2603.07860"
+arxiv: "https://arxiv.org/abs/2603.07860"
+bibtex: true
+permalink: /projects/spin/
+---
+
+<header class="sp-hero sp-wide">
+  <p class="sp-venue sp-lab"><span>ReALM-GEN 2026 (ICLR Workshop)</span> <span>arXiv:2603.07860</span> <span>formerly Guess &amp; Guide</span></p>
+  <h1 class="sp-title">
+    Sp<em>in</em><span class="sp-sub"><b>Sp</b>arse Scheduled Diffusion Guidance for <b>In</b>verse Problems</span>
+  </h1>
+  <div class="sp-meta">
+    <p class="sp-hand">first a warm start at one fixed timestep, <span>then a few guided steps.</span></p>
+    <div>
+      <p class="sp-authors">
+        <span>Abduragim Shtanchaev<sup>1</sup></span> <span>Albina Ilina<sup>1</sup></span> <span>Yazid Janati<sup>2</sup></span>
+        <span>Arip Asadulaev<sup>1</sup></span> <span>Martin Tak&aacute;&ccaron;<sup>1</sup></span> <span>Eric Moulines<sup>1,2</sup></span>
+      </p>
+      <p class="sp-aff"><span><sup>1</sup>Mohamed bin Zayed University of Artificial Intelligence</span> <span><sup>2</sup>&Eacute;cole Polytechnique</span></p>
+      <nav class="sp-links sp-lab" aria-label="Paper links">
+        <a class="fill" href="https://arxiv.org/pdf/2603.07860" target="_blank" rel="noopener">Paper</a>
+        <a href="https://arxiv.org/abs/2603.07860" target="_blank" rel="noopener">arXiv</a>
+        <a href="#bibtex">BibTeX</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- restorations: four before / after pictures, each with its own divider -->
+<section class="sp-band sp-bleed" aria-labelledby="sp-h-rest">
+  <div class="sp-in">
+    <h2 class="sp-kick sp-lab" id="sp-h-rest"><span class="sp-pos" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></span> Restorations <small>/ drag the dividers</small></h2>
+    <div class="sp-plates">
+      {% assign tasks = "blur|Gaussian deblur,inpainting|Center inpainting,sr4|Super-resolution ×4,jpeg2|JPEG QF=2" | split: "," %}
+      {% for item in tasks %}
+        {% assign t = item | split: "|" %}
+        <figure class="sp-plate">
+          <div class="sp-cmp" data-lean="0.2">
+            <img src="{{ '/assets/img/guess_and_guide/comparisons/' | append: t[0] | append: '_restored.png' | relative_url }}" width="360" height="360" alt="Spin restoration, {{ t[1] }}">
+            <img class="sp-cmp-top" src="{{ '/assets/img/guess_and_guide/comparisons/' | append: t[0] | append: '_degraded.png' | relative_url }}" width="360" height="360" alt="Degraded observation, {{ t[1] }}">
+            <svg class="sp-cmp-line" aria-hidden="true"><line x1="50%" y1="0" x2="50%" y2="100%"/></svg>
+            <div class="sp-cmp-knob" role="slider" tabindex="0" aria-label="Divider between the observation and the restoration, {{ t[1] }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 10l-5-4.2v8.4zM12 10l5-4.2v8.4z"/></svg>
+            </div>
+            <span class="sp-tag sp-lab l">Observation</span><span class="sp-tag sp-lab r">Spin</span>
+          </div>
+          <figcaption><b><small>0{{ forloop.index }}</small>{{ t[1] }}</b></figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+    <p class="sp-note">In each picture the degraded observation is on the left and the Spin restoration on the right. Both images are unprocessed.</p>
+  </div>
+</section>
+
+<section class="sp-sec" aria-labelledby="sp-h-short">
+  <h2 class="sp-kick sp-lab" id="sp-h-short"><span class="sp-pos" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span> In short</h2>
+  <p class="sp-lede">Spin replaces expensive denoiser guidance with a lightweight likelihood surrogate and sparse pixel-space optimization: <b>no backpropagation through the denoiser</b>, nor through the encoder-decoder in latent diffusion.</p>
+  <p class="sp-body">Pretrained diffusion models are strong priors for Bayesian inverse problems, where a clean signal is recovered from a measurement <i class="v">y</i> = <i class="v">𝒜</i>(<i class="v">x</i>) + <i class="v">n</i> without retraining for every degradation operator. The bottleneck is guidance: many zero-shot posterior-sampling methods require vector-Jacobian products through the denoiser at each denoising step, and sometimes through the latent encoder-decoder.</p>
+  <p class="sp-body">Spin avoids this cost by separating learned prior refinement from data-consistency enforcement, while maintaining strong reconstruction quality across diverse inverse problems.</p>
+
+  <div class="sp-three">
+    <div>
+      <h3>Backpropagation-free guidance</h3>
+      <p>Spin avoids VJPs through the denoiser and encoder-decoder, using gradients only through the forward operator <i class="v">𝒜</i> during explicit data-consistency optimization.</p>
+    </div>
+    <div>
+      <h3>Two-phase inference</h3>
+      <p>A fixed-<i class="v">t<sub>*</sub></i> warm-start phase produces an initial guess through denoise-optimize-renoise iterations, then a sparse guided-denoising phase refines it at selected timesteps.</p>
+    </div>
+    <div>
+      <h3>Broad inverse-problem coverage</h3>
+      <p>Evaluated on FFHQ, ImageNet, and FFHQ latent-diffusion experiments across linear and nonlinear tasks including deblurring, super-resolution, inpainting, JPEG restoration, phase retrieval, and HDR reconstruction.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sp-sec" aria-labelledby="sp-h-method">
+  <h2 class="sp-kick sp-lab" id="sp-h-method"><span class="sp-pos" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i></span> Method <small>/ two phases</small></h2>
+  <p class="sp-lede">Spin decomposes posterior sampling into two phases. The diffusion prior stays <b>forward-only</b>; measurement consistency is enforced with lightweight optimization outside the denoiser.</p>
+
+  <div class="sp-sched" role="img" aria-label="Schematic of the schedule along the diffusion time axis, from pure noise at T on the left to the image at 0 on the right. The stretch from T to the warm-start timestep t-star is not run. Phase 1 loops at t-star: denoise, optimize, re-noise. Phase 2 then visits a few selected timesteps on the way to 0.">
+    <div class="sp-s-row">
+      <div class="sp-s-skip"><span class="sp-s-tag">Not run</span></div>
+      <div class="sp-s-loop">
+        <span class="sp-s-tag">Phase 1 <b>Warm start</b></span>
+        <svg viewBox="0 0 130 110" aria-hidden="true">
+          <circle cx="65" cy="68" r="40" fill="none" stroke="#ECEAE4" stroke-width="2"/>
+          <path d="M19.5 73 L25 63 L30.5 73 Z M60 22.5 L70 28 L60 33.5 Z M99.5 63 L105 73 L110.5 63 Z" fill="#ECEAE4"/>
+          <circle cx="65" cy="108" r="5" fill="#0A0B0E" stroke="#ECEAE4" stroke-width="2"/>
+          <g font-family="Barlow, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#ECEAE4" text-anchor="middle">
+            <text x="42" y="84">1</text><text x="65" y="47">2</text><text x="88" y="84">3</text>
+          </g>
+        </svg>
+      </div>
+      <div class="sp-s-run">
+        <span class="sp-s-tag">Phase 2 <b>Guided denoising</b></span>
+        <i style="left:12%"></i><i style="left:25%"></i><i style="left:40%"></i><i style="left:58%"></i><i style="left:79%"></i><i class="end" style="left:100%"></i>
+      </div>
+    </div>
+    <div class="sp-s-axis" aria-hidden="true">
+      <span><i class="v">T</i>pure noise</span>
+      <span><i class="v">t<sub>*</sub></i>fixed timestep</span>
+      <span><i class="v">0</i>image</span>
+    </div>
+    <span class="sp-s-dot" aria-hidden="true"></span>
+  </div>
+  <p class="sp-note">Schematic. The number and position of the loop iterations and of the guided timesteps are illustrative.</p>
+
+  <div class="sp-phases">
+    <div class="sp-phase one">
+      <span class="sp-lab">Phase 1</span>
+      <h3><em>Warm start</em>: an initial sample at <i class="v">t<sub>*</sub></i></h3>
+      <p>Spin first seeks an approximate sample at a fixed intermediate timestep <i class="v">t<sub>*</sub></i>. Each warm-start iteration:</p>
+      <ol>
+        <li data-step="a1"><b>denoises</b> the current state and decodes it to image space,</li>
+        <li data-step="a2"><b>optimizes</b> the image to better match the observation under <i class="v">𝒜</i>,</li>
+        <li data-step="a3"><b>encodes and re-noises</b> the optimized image back to the same timestep.</li>
+      </ol>
+      <p>This creates a useful posterior-informed starting point and avoids running a full guided reverse process from pure noise.</p>
+    </div>
+    <div class="sp-phase two">
+      <span class="sp-lab">Phase 2</span>
+      <h3><em>Guided denoising</em>: a sparse grid of timesteps</h3>
+      <p>Starting from the warm-start sample, Spin follows a sparse grid of timesteps. At each selected timestep, it alternates between:</p>
+      <ol>
+        <li data-step="b1"><b>Prior refinement</b>: forward-only denoising and diffusion transitions preserve realism.</li>
+        <li data-step="b2"><b>Data consistency</b>: pixel-space optimization pulls the reconstruction toward the observation.</li>
+        <li data-step="b3"><b>Re-noising</b>: the optimized estimate is returned to the noisy trajectory before continuing.</li>
+      </ol>
+      <p>The guidance schedule concentrates optimization around intermediate noise levels, where the denoiser can still correct optimization artifacts while the sample already carries useful structure.</p>
+    </div>
+  </div>
+
+  <figure class="sp-fig sp-wide">
+    <a href="{{ '/assets/img/guess_and_guide/Drawing.jpg' | relative_url }}" aria-label="Open the overview figure at full size"><img src="{{ '/assets/img/guess_and_guide/Drawing.jpg' | relative_url }}" width="2388" height="1326" loading="lazy" alt="Spin overview"></a>
+    <figcaption>Spin overview</figcaption>
+  </figure>
+</section>
+
+<section class="sp-sec" aria-labelledby="sp-h-res">
+  <h2 class="sp-kick sp-lab" id="sp-h-res"><span class="sp-pos" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></span> Results <small>/ quality</small></h2>
+  <p class="sp-body">Spin is evaluated on both pixel-space and latent-space diffusion models. The main paper reports LPIPS as the primary metric, with PSNR and SSIM in the supplementary material.</p>
+  <div class="sp-tablewrap">
+    <table class="sp-table">
+      <caption>FFHQ, pixel space / LPIPS, lower is better</caption>
+      <thead>
+        <tr><th scope="col">Task</th><th scope="col" class="us">Spin</th><th scope="col">DAPS</th><th scope="col">DPS</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Gaussian Deblur</th><td class="us"><strong>0.17</strong><small>&plusmn; 0.06</small></td><td><strong>0.19</strong><small>&plusmn; 0.06</small></td><td class="best"><strong>0.16</strong><small>&plusmn; 0.05</small></td></tr>
+        <tr><th scope="row">Motion Deblur</th><td class="us best"><strong>0.13</strong><small>&plusmn; 0.04</small></td><td><strong>0.19</strong><small>&plusmn; 0.06</small></td><td><strong>0.21</strong><small>&plusmn; 0.06</small></td></tr>
+        <tr><th scope="row">Super-Resolution &times;4</th><td class="us"><strong>0.20</strong><small>&plusmn; 0.07</small></td><td class="best"><strong>0.19</strong><small>&plusmn; 0.06</small></td><td><strong>0.22</strong><small>&plusmn; 0.07</small></td></tr>
+        <tr><th scope="row">Super-Resolution &times;16</th><td class="us best"><strong>0.35</strong><small>&plusmn; 0.08</small></td><td><strong>0.45</strong><small>&plusmn; 0.10</small></td><td><strong>0.36</strong><small>&plusmn; 0.08</small></td></tr>
+        <tr><th scope="row">Box Inpainting</th><td class="us"><strong>0.14</strong><small>&plusmn; 0.04</small></td><td class="best"><strong>0.12</strong><small>&plusmn; 0.04</small></td><td><strong>0.20</strong><small>&plusmn; 0.08</small></td></tr>
+        <tr><th scope="row">JPEG (QF=2)</th><td class="us best"><strong>0.16</strong><small>&plusmn; 0.06</small></td><td><strong>0.22</strong><small>&plusmn; 0.07</small></td><td><strong>0.28</strong><small>&plusmn; 0.07</small></td></tr>
+      </tbody>
+    </table>
+    <p class="sp-note">Representative FFHQ results from the main paper. A dot marks the lowest LPIPS in each row.</p>
+  </div>
+</section>
+
+<!-- cost: a raised panel -->
+<section class="sp-blue sp-bleed" aria-labelledby="sp-h-cost">
+  <div class="sp-in">
+    <h2 class="sp-kick sp-lab" id="sp-h-cost"><span class="sp-pos" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i></span> Results <small>/ cost</small></h2>
+    <div class="sp-cost">
+      <div class="sp-bars">
+        <h3>Runtime</h3><span class="sp-lab">FFHQ, pixel space</span>
+        <div class="sp-bar us" style="--v:25;--m:105"><span class="n">Spin</span><span class="b"><i></i></span><span class="v">25 s</span></div>
+        <div class="sp-bar" style="--v:105;--m:105"><span class="n">DPS</span><span class="b"><i></i></span><span class="v">105 s</span></div>
+      </div>
+      <div class="sp-bars">
+        <h3>Memory</h3><span class="sp-lab">FFHQ, pixel space</span>
+        <div class="sp-bar us" style="--v:1983;--m:3309"><span class="n">Spin</span><span class="b"><i></i></span><span class="v">1983 MB</span></div>
+        <div class="sp-bar" style="--v:3309;--m:3309"><span class="n">DPS</span><span class="b"><i></i></span><span class="v">3309 MB</span></div>
+      </div>
+      <div class="sp-bars">
+        <h3>Runtime</h3><span class="sp-lab">FFHQ, latent diffusion</span>
+        <div class="sp-bar us" style="--v:24;--m:1254"><span class="n">Spin</span><span class="b"><i></i></span><span class="v">24 s</span></div>
+        <div class="sp-bar" style="--v:509;--m:1254"><span class="n">ReSample</span><span class="b"><i></i></span><span class="v">509 s</span></div>
+        <div class="sp-bar" style="--v:1254;--m:1254"><span class="n">DAPS</span><span class="b"><i></i></span><span class="v">1254 s</span></div>
+      </div>
+    </div>
+    <div class="sp-takes">
+      <p><b>Quality-speed tradeoff</b>Spin is best or second-best on most FFHQ pixel-space tasks while being the fastest method in the reported tables.</p>
+      <p><b>Generality</b>The same inference framework is used across linear and nonlinear inverse problems, including latent diffusion settings where avoiding encoder-decoder VJPs is especially important.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sp-sec" aria-labelledby="sp-h-lim">
+  <h2 class="sp-kick sp-lab" id="sp-h-lim"><span class="sp-pos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i></span> Limitations</h2>
+  <div class="sp-limit">
+    <p>The choice of the warm-start timestep <i class="v">t<sub>*</sub></i> and the spacing of guided timesteps are important. Starting too early increases runtime without clear quality gains, while starting too late can produce artifacts because the denoiser has less opportunity to correct the optimized estimate.</p>
+  </div>
+  <p class="sp-lede" style="margin-top:2.4rem">Spin replaces dense denoiser-gradient guidance with a two-phase procedure: a fixed-timestep warm start and sparse scheduled pixel-space guidance.</p>
+  <p class="sp-body">This yields faster and more memory-efficient inference while maintaining competitive reconstruction quality across FFHQ, ImageNet, and latent-diffusion experiments.</p>
+</section>
+
+<section class="sp-sec" id="bibtex" aria-labelledby="sp-h-cite">
+  <h2 class="sp-kick sp-lab" id="sp-h-cite"><span class="sp-pos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i></span> Citation</h2>
+  <div class="sp-bib">
+    <button type="button" hidden>Copy</button>
+<pre>@article{shtanchaev2026sparse,
+  title={Sparse Scheduled Diffusion Guidance for Inverse Problems},
+  author={Shtanchaev, Abduragim and Ilina, Albina and Janati, Yazid and Asadulaev, Arip and Takáč, Martin and Moulines, Eric},
+  journal={arXiv preprint arXiv:2603.07860},
+  year={2026}
+}</pre>
+  </div>
+  <p class="sp-end sp-lab">ReALM-GEN 2026 (ICLR Workshop) / arXiv:2603.07860</p>
+</section>

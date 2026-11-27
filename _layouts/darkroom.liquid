@@ -1,0 +1,259 @@
+---
+layout: default
+---
+<!-- _layouts/darkroom.liquid: the dark look shared by the home page, publications and CV (same palette and type as the PASEO page) -->
+
+<style>
+  /* Dark in both site themes, so the navbar and footer follow; the theme switch would do nothing here. */
+  :root, html[data-theme="light"], html[data-theme="dark"] {
+    --global-bg-color: #0A0B0E;
+    --global-text-color: #ECEAE4;
+    --global-text-color-light: #8D8F96;
+    --global-theme-color: #D7FF3E;
+    --global-hover-color: #D7FF3E;
+    --global-hover-text-color: #0A0B0E;
+    --global-divider-color: #2B2D34;
+    --global-card-bg-color: #111216;
+    --global-code-bg-color: #111216;
+    --global-footer-bg-color: #0A0B0E;
+    --global-footer-text-color: #8D8F96;
+    --global-footer-link-color: #ECEAE4;
+    --dr-bg: #0A0B0E; --dr-ink: #ECEAE4; --dr-soft: #C9C8C3; --dr-dim: #8D8F96; --dr-rule: #2B2D34; --dr-acc: #D7FF3E;
+  }
+  .toggle-container { display: none; }
+
+  .dr { position: relative; font-family: "Barlow", "Avenir Next", "Helvetica Neue", sans-serif; color: var(--dr-ink); font-size: 1.06rem; line-height: 1.55; }
+  .dr *, .dr *::before, .dr *::after { box-sizing: border-box; }
+  .dr a { color: inherit; text-decoration: none; }
+  .dr a:hover { text-decoration: none; }
+  .dr h1, .dr h2, .dr h3, .dr p, .dr figure, .dr ul { margin: 0; }
+  :where(.dr) span, :where(.dr) li { color: inherit; }   /* the theme colours every span and list item */
+  .dr-mono { font-family: "IBM Plex Mono", "SF Mono", Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+  /* ---------- small parts shared by the pages ---------- */
+  .dr-tag { display: inline-block; font-family: "IBM Plex Mono", Menlo, monospace; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase;
+    line-height: 1.35; padding: .28rem .55rem; border-radius: 3px; border: 1px solid var(--dr-rule); color: var(--dr-soft); }
+  .dr-tag.solid { background: var(--dr-acc); border-color: var(--dr-acc); color: var(--dr-bg); font-weight: 500; }
+  .dr-tag.review { border-style: dashed; border-color: var(--dr-dim); color: var(--dr-ink); }
+  .dr-tag.review i { display: block; font-style: normal; color: var(--dr-dim); font-size: .58rem; }
+  .dr-venue { display: flex; flex-wrap: wrap; gap: .4rem; align-items: flex-start; }
+  .dr-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; padding: 1.4rem 0 2.2rem; }
+  .dr-top h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: clamp(3.3rem, 14vw, 7.6rem); line-height: .82;
+    text-transform: uppercase; letter-spacing: -.01em; }
+  .dr-top h1 sup { font-size: .26em; vertical-align: top; position: relative; top: .3em; margin-left: .3em; color: var(--dr-acc); letter-spacing: 0; }
+  .dr-top .dr-side { font-size: .7rem; color: var(--dr-dim); text-align: right; line-height: 1.8; padding-bottom: .3rem; white-space: nowrap; }
+  .dr-pill { display: inline-block; padding: .5rem .95rem; border-radius: 99px; border: 1px solid var(--dr-acc); color: var(--dr-acc); font-size: .7rem; }
+  .dr a.dr-pill.fill, .dr a.dr-pill:hover { background: var(--dr-acc); color: var(--dr-bg); }
+  .dr-sec { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-top: 2.6rem; margin-bottom: 1rem; }
+  .dr-sec .dr-num { font-family: "Barlow Condensed", sans-serif; font-weight: 800; line-height: .78; letter-spacing: -.01em; text-transform: uppercase;
+    font-size: clamp(4.2rem, 17vw, 8.2rem); color: transparent; -webkit-text-stroke: 1.4px var(--dr-dim); }
+  .dr-sec.word .dr-num { font-size: clamp(2.9rem, 11vw, 5rem); line-height: .8; }
+  .dr-sec.now .dr-num { -webkit-text-stroke-color: var(--dr-acc); }
+  .dr-sec .dr-note { font-size: .66rem; color: var(--dr-dim); padding-bottom: .2rem; text-align: right; }
+  .dr-row { position: static; display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) auto; gap: .4rem 1.4rem; align-items: start;
+    padding: 1.25rem 0 1.35rem; border-top: 1px solid var(--dr-rule); }
+  .dr-row[hidden], .dr-year[hidden] { display: none; }
+  .dr-row h3, .dr-title { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.62rem; line-height: 1.13; }
+
+  /* ---------- home ---------- */
+  .dr-hero { display: grid; grid-template-columns: minmax(0, 1fr) clamp(13rem, 31%, 18rem); gap: 1.6rem; align-items: end;
+    padding: .6rem 0 2rem; border-bottom: 1px solid var(--dr-rule); }
+  .dr-hi { font-size: .7rem; color: var(--dr-acc); margin-bottom: 1.1rem !important; }
+  .dr-hero h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: clamp(3.3rem, 12.5vw, 6.5rem); line-height: .84;
+    text-transform: uppercase; letter-spacing: -.01em; }
+  .dr-hero h1 span { display: block; color: transparent; -webkit-text-stroke: 1.6px var(--dr-acc); }
+  .dr-roleline { display: flex; flex-wrap: wrap; gap: 0 1.1rem; margin-top: 1.3rem !important; font-size: .66rem; letter-spacing: .09em;
+    color: var(--dr-dim); line-height: 2; }
+  .dr-roleline span { white-space: nowrap; } .dr-roleline b { color: var(--dr-ink); font-weight: 500; }
+  .dr .dr-roleline a, .dr .dr-place a { border-bottom: 1px solid var(--dr-dim); }
+  .dr .dr-roleline a:hover, .dr .dr-place a:hover { color: var(--dr-acc); border-color: var(--dr-acc); }
+  .dr-shot { position: relative; aspect-ratio: 4 / 5; }
+  .dr-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; display: block;
+    clip-path: polygon(24% 0, 100% 0, 100% 100%, 0 100%); }
+  .dr-shot svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .dr-shot line { stroke: var(--dr-acc); stroke-width: 2; }
+  .dr-lede { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: clamp(1.6rem, 4.6vw, 2.35rem); line-height: 1.14;
+    margin: 2.6rem 0 1.2rem !important; max-width: 44rem; }
+  .dr-lede b { color: var(--dr-acc); font-weight: inherit; }
+  .dr-bio { color: var(--dr-soft); max-width: 41rem; margin-bottom: .95rem !important; }
+  .dr .dr-bio a { border-bottom: 1px solid var(--dr-acc); } .dr .dr-bio a:hover { color: var(--dr-acc); }
+  .dr-reach { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 2.2rem; }
+  .dr-reach a { padding: .5rem .95rem; border-radius: 99px; border: 1px solid var(--dr-rule); color: var(--dr-soft); font-size: .7rem; }
+  .dr .dr-reach a:first-child { background: var(--dr-acc); border-color: var(--dr-acc); color: var(--dr-bg); }
+  .dr .dr-reach a:hover { border-color: var(--dr-acc); color: var(--dr-acc); } .dr .dr-reach a:first-child:hover { color: var(--dr-bg); }
+
+  /* ---------- publications ---------- */
+  .dr-feat { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .dr-card { min-width: 0; }
+  .dr-split { position: relative; height: clamp(14rem, 34vw, 19rem); overflow: hidden; border-radius: 4px; background: #111216; cursor: ew-resize;
+    touch-action: pan-y; }
+  .dr-split img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+  .dr-split .dr-over { clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }   /* the script takes over; without it, half and half */
+  .dr-split svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .dr-split line { stroke: var(--dr-acc); stroke-width: 2; }
+  .dr-split::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 62%; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(10,11,14,0), rgba(10,11,14,.88)); }
+  .dr-split .dr-name { position: absolute; z-index: 1; left: 1rem; bottom: .5rem; font-family: "Barlow Condensed", sans-serif; font-weight: 800;
+    font-size: clamp(2.6rem, 7.4vw, 4.4rem); line-height: 1; text-transform: uppercase; letter-spacing: -.01em; pointer-events: none; white-space: nowrap; }
+  .dr-split .dr-name.long { font-size: clamp(2rem, 5.4vw, 3.2rem); bottom: .7rem; }
+  .dr-split .dr-name i { font-style: normal; color: transparent; -webkit-text-stroke: 1.6px var(--dr-acc); }
+  .dr-card .dr-venue { margin: 1rem 0 .6rem; }
+  .dr-card h2 { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.5rem; line-height: 1.16; margin-bottom: .9rem; }
+  .dr-go { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .dr-chips { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 3.4rem; }
+  .dr-chips button { font: inherit; font-size: .95rem; padding: .42rem .95rem; border-radius: 99px; border: 1px solid var(--dr-rule); background: none;
+    color: var(--dr-soft); cursor: pointer; }
+  .dr-chips button:hover { border-color: var(--dr-soft); }
+  .dr-chips button[aria-pressed="true"] { background: var(--dr-ink); border-color: var(--dr-ink); color: var(--dr-bg); }
+  .dr-chips sup { margin-left: .35rem; font-size: .68rem; opacity: .65; }
+  .dr-row .dr-venue { flex-direction: column; padding-top: .25rem; }
+  .dr-title { display: inline; background: linear-gradient(var(--dr-acc), var(--dr-acc)) 0 100% / 0 2px no-repeat; transition: background-size .25s; }
+  .dr-row:hover .dr-title { background-size: 100% 2px; }
+  .dr-authors { margin-top: .45rem !important; font-size: .95rem; color: var(--dr-dim); }
+  .dr-authors b { color: var(--dr-ink); font-weight: 600; }
+  .dr-links { display: flex; gap: .4rem; padding-top: .3rem; }
+  .dr-links a { padding: .32rem .62rem; border-radius: 99px; border: 1px solid var(--dr-rule); color: var(--dr-soft); font-size: .66rem; }
+  .dr .dr-links a:hover { border-color: var(--dr-acc); color: var(--dr-acc); }
+  /* the figure appears beside the pointer while a row is hovered */
+  .dr-peek { position: absolute; z-index: 5; left: 0; top: 0; width: 19rem; padding: .5rem; background: #fff; border-radius: 5px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.55); pointer-events: none; opacity: 0; transform: translate(-200vw, 0); transition: opacity .16s; }
+  .dr-peek img { display: block; width: 100%; height: auto; max-height: 15rem; object-fit: contain; }
+  .dr-row.on .dr-peek { opacity: 1; }
+
+  /* ---------- cv ---------- */
+  .dr-cv .dr-row { grid-template-columns: 9.5rem minmax(0, 1fr); }
+  .dr-cv .dr-row.slim { padding: .8rem 0 .85rem; align-items: baseline; }
+  .dr-when { font-size: .7rem; color: var(--dr-soft); padding-top: .4rem; }
+  .dr-cv .dr-row.slim h3 { font-size: 1.36rem; display: inline; margin-right: .7rem; }
+  .dr-place { margin-top: .3rem !important; font-size: .95rem; color: var(--dr-soft); }
+  .dr-desc { margin-top: .5rem !important; padding: 0; list-style: none; font-size: .95rem; color: var(--dr-dim); }
+  .dr-desc li { padding-left: 1.1rem; position: relative; }
+  .dr-desc li::before { content: ""; position: absolute; left: 0; top: .74em; width: .55rem; height: 1px; background: var(--dr-acc); }
+  .dr-chipsline { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .dr-chipsline span { font-size: .92rem; padding: .25rem .75rem; border-radius: 99px; border: 1px solid var(--dr-rule); color: var(--dr-soft); }
+  .dr-chipsline i { font-style: normal; color: var(--dr-dim); margin-left: .25rem; }
+
+  @media (max-width: 640px) {
+    .dr-hero { grid-template-columns: 1fr; } .dr-shot { order: -1; max-width: 17rem; }
+    .dr-top { display: block; } .dr-top .dr-side { text-align: left; margin-top: 1rem; }
+    .dr-feat { grid-template-columns: 1fr; gap: 2.2rem; } .dr-split { height: 15rem; }
+    .dr-split .dr-name { font-size: 3.4rem; } .dr-split .dr-name.long { font-size: 2.6rem; }
+    .dr-row, .dr-cv .dr-row { grid-template-columns: 1fr; }
+    .dr-row .dr-venue { flex-direction: row; }
+    .dr-row h3, .dr-title { font-size: 1.4rem; }
+  }
+  /* No hover, or a narrow screen: the figure sits under its row instead, once it has loaded. */
+  @media (hover: none), (max-width: 640px) {
+    .dr-peek { position: static; grid-column: 2; opacity: 1; transform: none !important; width: 100%; max-width: 22rem; box-shadow: none;
+      margin-top: .4rem !important; }
+    .dr-peek:not(.ready) { display: none; }
+  }
+  @media (max-width: 640px) { .dr-peek { grid-column: auto; } }
+</style>
+
+<!-- web fonts after the styles: a slow font request must not hold back the dark palette -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<div class="post dr">
+  {{ content }}
+</div>
+
+<script>
+  (function () {
+    var page = document.querySelector(".dr");
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Featured panels: before / after. The divider drifts until a pointer first moves over the picture, then follows the pointer.
+    var splits = [];
+    document.querySelectorAll(".dr-split").forEach(function (el, i) {
+      var over = el.querySelector(".dr-over"), line = el.querySelector("line");
+      var lean = parseFloat(el.dataset.lean || "0"), s = { pos: 0.5, touched: false, visible: !("IntersectionObserver" in window) };
+      s.draw = function () {
+        var d = lean * el.clientHeight / Math.max(1, el.clientWidth), a = (s.pos + d / 2) * 100, b = (s.pos - d / 2) * 100;
+        over.style.clipPath = "polygon(0 0, " + a + "% 0, " + b + "% 100%, 0 100%)";
+        line.setAttribute("x1", a + "%"); line.setAttribute("x2", b + "%");
+      };
+      s.tick = function (t) { if (!s.touched && s.visible) { s.pos = 0.5 + 0.16 * Math.sin(t / 1900 + i * 2.1); s.draw(); } };
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect(); s.touched = true; s.pos = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); s.draw();
+      });
+      if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { s.visible = en[0].isIntersecting; }).observe(el);
+      window.addEventListener("resize", s.draw);
+      s.draw(); splits.push(s);
+    });
+    if (splits.length && !reduce) (function loop(t) {
+      var live = false;
+      splits.forEach(function (s) { s.tick(t); live = live || !s.touched; });
+      if (live) window.requestAnimationFrame(loop);   // nothing left to animate once every divider has been moved by hand
+    })(0);
+
+    // Publications: topic filter. Each year's count follows what is shown.
+    var chips = document.querySelectorAll(".dr-chips button");
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        chips.forEach(function (o) { o.setAttribute("aria-pressed", o === c ? "true" : "false"); });
+        document.querySelectorAll(".dr-pubs .dr-row").forEach(function (r) {
+          r.hidden = c.dataset.topic !== "all" && r.dataset.topic !== c.dataset.topic;
+        });
+        document.querySelectorAll(".dr-year").forEach(function (y) {
+          var n = y.querySelectorAll(".dr-row:not([hidden])").length, count = y.querySelector(".dr-count");
+          y.hidden = !n;
+          if (count) count.textContent = n + (n === 1 ? " entry" : " entries");
+        });
+      });
+    });
+
+    // Publications: each row's figure. With a mouse it appears beside the pointer (or beside the row, for keyboard focus);
+    // without hover or on a narrow screen it sits under the row. The media query is read each time, so resizing is safe.
+    var rows = document.querySelectorAll(".dr-pubs .dr-row"), peeks = document.querySelectorAll(".dr-peek img[data-src]");
+    var hover = window.matchMedia("(hover: hover) and (min-width: 641px)");
+    function load(img) {
+      if (img.getAttribute("src")) return;
+      img.addEventListener("load", function () { img.parentNode.classList.add("ready"); });
+      img.src = img.dataset.src;
+    }
+    // The rows are watched, not the figures: a figure stays hidden until it has loaded, and a hidden box never intersects.
+    var near = "IntersectionObserver" in window ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var img = en.target.querySelector(".dr-peek img[data-src]");
+        if (img) load(img);
+        near.unobserve(en.target);
+      });
+    }, { rootMargin: "400px" }) : null;
+    function arm() {
+      if (hover.matches || !near) {   // floating figures: fetch them all once the page itself has loaded
+        if (document.readyState === "complete") peeks.forEach(load); else window.addEventListener("load", function () { peeks.forEach(load); });
+      } else {                        // figures under the rows: fetch each as it comes near the screen
+        rows.forEach(function (row) { row.classList.remove("on"); near.observe(row); });
+      }
+    }
+    if (peeks.length) {
+      arm();
+      if (hover.addEventListener) hover.addEventListener("change", arm); else if (hover.addListener) hover.addListener(arm);
+    }
+    rows.forEach(function (row) {
+      var peek = row.querySelector(".dr-peek");
+      if (!peek) return;
+      function place(cx, cy) {
+        var img = peek.querySelector("img[data-src]");
+        if (img) load(img);   // in case the page has not finished loading yet
+        var r = page.getBoundingClientRect(), w = peek.offsetWidth, h = peek.offsetHeight;
+        var x = cx - r.left + 22, y = cy - r.top + 18;
+        if (cx + 22 + w > window.innerWidth - 8) x = cx - r.left - w - 22;
+        if (cy + 18 + h > window.innerHeight - 8) y = cy - r.top - h - 18;
+        peek.style.transform = "translate(" + x + "px," + y + "px) rotate(-1.5deg)";
+        row.classList.add("on");
+      }
+      row.addEventListener("pointermove", function (e) { if (hover.matches && e.pointerType !== "touch") place(e.clientX, e.clientY); });
+      row.addEventListener("pointerleave", function () { row.classList.remove("on"); });
+      row.addEventListener("focusin", function () {
+        if (!hover.matches) return;
+        var b = row.getBoundingClientRect(); place(b.left + b.width * 0.3, b.bottom - 14);
+      });
+      row.addEventListener("focusout", function () { row.classList.remove("on"); });
+    });
+  })();
+</script>

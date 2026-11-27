@@ -1,0 +1,399 @@
+---
+layout: default
+---
+<!-- _layouts/project_spin.liquid: project page for Spin (formerly Guess & Guide), in the site's dark look (palette and type of the PASEO page).
+     Each restoration is a before / after picture with the same leaning divider as the PASEO page. -->
+
+<style>
+  /* Dark in both site themes, so the navbar and footer follow; the theme switch would do nothing here. */
+  :root, html[data-theme="light"], html[data-theme="dark"] {
+    --global-bg-color: #0A0B0E;
+    --global-text-color: #ECEAE4;
+    --global-text-color-light: #8D8F96;
+    --global-theme-color: #D7FF3E;
+    --global-hover-color: #D7FF3E;
+    --global-hover-text-color: #0A0B0E;
+    --global-divider-color: #2B2D34;
+    --global-card-bg-color: #111216;
+    --global-code-bg-color: #111216;
+    --global-footer-bg-color: #0A0B0E;
+    --global-footer-text-color: #8D8F96;
+    --global-footer-link-color: #ECEAE4;
+    /* names kept from the first design: "paper" is the page, "blue" is the accent (now lime), "red" the warning colour */
+    --sp-paper: #0A0B0E; --sp-paper-2: #111216; --sp-ink: #ECEAE4; --sp-soft: #C9C8C3; --sp-dim: #8D8F96;
+    --sp-rule: #2B2D34; --sp-blue: #D7FF3E; --sp-red: #FF6B5E;
+  }
+  .toggle-container { display: none; }
+  body { overflow-x: clip; }
+
+  .sp { font-family: "Barlow", "Avenir Next", "Helvetica Neue", sans-serif; color: var(--sp-ink);
+    font-size: 1.06rem; line-height: 1.55; }
+  .sp *, .sp *::before, .sp *::after { box-sizing: border-box; }
+  .sp a { color: var(--sp-blue); }
+  .sp i.v { font-family: "Times New Roman", serif; font-style: italic; font-size: 1.08em; }
+  .sp-lab { font-family: "IBM Plex Mono", "SF Mono", Menlo, monospace; font-size: .72rem; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
+  .sp-bleed { width: 100vw; margin-left: calc(50% - 50vw); }
+  .sp-in { width: min(1180px, calc(100vw - 2rem)); margin: 0 auto; }
+  .sp-wide { width: min(1180px, calc(100vw - 2rem)); margin-left: calc(50% - min(590px, 50vw - 1rem)); }
+
+  /* ---------- hero ---------- */
+  .sp-hero { margin-top: -1.2rem; }
+  .sp-venue { display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; color: var(--sp-dim); margin: 0 0 1.1rem; }
+  .sp-venue span::before { content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%;
+    background: var(--sp-blue); margin-right: .6em; vertical-align: .08em; }
+  .sp-venue span + span::before { background: none; box-shadow: inset 0 0 0 1.5px var(--sp-dim); }
+  .sp-title { margin: 0; font-family: "Barlow Condensed", sans-serif; font-weight: 800; color: var(--sp-ink); text-transform: uppercase;
+    font-size: min(46vw, 15rem); line-height: .8; letter-spacing: -.01em; }
+  .sp-title em { font-style: normal; color: var(--sp-blue); }   /* Sp + In: the two halves of the name */
+  .sp-sub { display: block; font-weight: 700; font-size: clamp(1.4rem, 3.4vw, 2.4rem); line-height: 1.12; letter-spacing: .02em;
+    color: var(--sp-soft); margin-top: 1.5rem; text-transform: uppercase; }
+  .sp-sub b { color: var(--sp-blue); font-weight: inherit; }
+  .sp-meta { display: grid; gap: 1.4rem; margin-top: .9rem; }
+  .sp-hand { font-weight: 500; color: var(--sp-blue); font-size: 1.25rem; line-height: 1.3; margin: 0; max-width: 21rem; }
+  .sp-hand span { color: var(--sp-dim); }
+  .sp-authors { font-size: 1rem; line-height: 1.75; margin: 0; }
+  .sp-authors span { white-space: nowrap; }
+  .sp-authors span:not(:last-child)::after { content: ","; }
+  .sp-authors sup, .sp-aff sup { color: var(--sp-blue); font-weight: 500; }
+  .sp-aff { font-size: .9rem; color: var(--sp-dim); margin: .45rem 0 0; line-height: 1.6; }
+  .sp-aff span { display: block; }
+  .sp-aff span, .sp-s-axis span { color: inherit; }
+  .sp-links { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.2rem 0 0; }
+  .sp-links a { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1.15rem; border: 1px solid var(--sp-blue);
+    border-radius: 99px; color: var(--sp-blue); text-decoration: none; transition: background .15s, color .15s; }
+  .sp-links a.fill, .sp-links a:hover { background: var(--sp-blue); color: var(--sp-paper); text-decoration: none; }
+  .sp-links a.fill:hover { background: var(--sp-ink); border-color: var(--sp-ink); }
+  .sp a:focus-visible, .sp button:focus-visible, .sp [role="slider"]:focus-visible { outline: 2px solid var(--sp-ink); outline-offset: 3px; }
+
+  /* ---------- section furniture ---------- */
+  .sp-sec { margin-top: clamp(3rem, 7vw, 5rem); }
+  .sp-kick { display: flex; align-items: center; gap: .9rem; margin: 0 0 1.4rem; color: var(--sp-blue); border-top: 1px solid var(--sp-rule);
+    padding-top: 1rem; }
+  .sp-band .sp-kick, .sp-blue .sp-kick { border-top: 0; padding-top: 0; }
+  .sp-kick small { font: inherit; color: var(--sp-dim); }
+  /* a sparse row of dots says where we are on the page */
+  .sp-pos { display: inline-flex; gap: .32rem; }
+  .sp-pos i { width: .5rem; height: .5rem; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--sp-dim); }
+  .sp-pos i.on { background: var(--sp-blue); box-shadow: none; }
+  .sp-lede { font-weight: 500; font-size: clamp(1.25rem, 2.6vw, 1.7rem); line-height: 1.35; margin: 0 0 1.1rem; max-width: 46rem; }
+  .sp-lede b { font-weight: 600; color: var(--sp-blue); }
+  .sp p.sp-body { color: var(--sp-soft); max-width: 44rem; margin: 0 0 1rem; }
+  .sp-note { font-size: .86rem; color: var(--sp-dim); margin: 1.1rem 0 0; max-width: 46rem; line-height: 1.5; }
+
+  /* ---------- restorations: four pictures, each with a leaning divider ---------- */
+  .sp-band { background: var(--sp-paper-2); border-top: 1px solid var(--sp-rule); border-bottom: 1px solid var(--sp-rule);
+    padding: clamp(1.5rem, 3.5vw, 2.4rem) 0 clamp(1.7rem, 4vw, 2.6rem); margin-top: clamp(2rem, 5vw, 3.2rem); }
+  .sp-plates { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.75rem, 2vw, 1.5rem); }
+  .sp-plate { margin: 0; min-width: 0; }
+  .sp-cmp { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 3px; background: var(--sp-paper);
+    touch-action: pan-y; cursor: ew-resize; user-select: none; -webkit-user-select: none; }
+  /* The source PNGs carry a thin white edge (2px on top, 3px on the left of the restorations): both images are
+     cropped by the same 4px of 360 on every side so the frame hides it. Nothing is rescaled differently. */
+  .sp-cmp img { position: absolute; left: -1.14%; top: -1.14%; width: 102.28%; height: 102.28%; max-width: none; display: block;
+    object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  .sp-cmp-top { clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); }   /* the script takes over; without it, half and half */
+  .sp-cmp-line { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .sp-cmp-line line { stroke: var(--sp-blue); stroke-width: 2; }
+  .sp-cmp-knob { position: absolute; z-index: 2; left: 50%; top: 84%; width: 2.2rem; height: 2.2rem; margin: -1.1rem 0 0 -1.1rem; border-radius: 50%;
+    background: var(--sp-paper); border: 2px solid var(--sp-blue); display: grid; place-items: center; padding: 0; cursor: ew-resize;
+    touch-action: none; }
+  .sp:not(.sp-js) .sp-cmp-knob { display: none; }   /* without the script the pictures stay half and half */
+  .sp-cmp-knob svg { width: 1.1rem; height: 1.1rem; fill: var(--sp-blue); }
+  .sp-tag { position: absolute; top: .6rem; font-size: .58rem; padding: .28rem .5rem; border-radius: 99px; pointer-events: none;
+    background: rgba(10,11,14,.72); color: var(--sp-ink); }
+  .sp-tag.l { left: .6rem; } .sp-tag.r { right: .6rem; color: var(--sp-blue); }
+  .sp-plate figcaption { padding-top: .85rem; }
+  .sp-plate figcaption b { font-family: "Barlow Condensed", sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(1.1rem, 2.2vw, 1.6rem); line-height: 1.05; }
+  .sp-plate figcaption b small { font-family: "IBM Plex Mono", Menlo, monospace; font-size: .66rem; font-weight: 400; letter-spacing: .1em;
+    color: var(--sp-blue); margin-right: .6em; vertical-align: .3em; }
+
+  /* ---------- contributions ---------- */
+  .sp-three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem 2.4rem; margin-top: 2.2rem; }
+  .sp-three div { border-top: 1px solid var(--sp-rule); padding-top: .9rem; }
+  .sp-three h3 { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.5rem; line-height: 1.12; margin: 0 0 .5rem; color: var(--sp-ink); }
+  .sp-three p { margin: 0; color: var(--sp-soft); font-size: .98rem; }
+
+  /* ---------- method: the schedule ---------- */
+  .sp-sched { --L: 8.125rem; position: relative; margin: 2.2rem 0 .4rem; }
+  .sp-s-row { display: flex; align-items: flex-end; height: calc(var(--L) * .846 + 1.2rem); }
+  .sp-s-skip { flex: 1.1 1 0; min-width: 2.6rem; height: 100%; position: relative; border-bottom: 2px dashed #4A4C55; }
+  .sp-s-loop { flex: 0 0 var(--L); height: 100%; position: relative; }
+  .sp-s-loop::before, .sp-s-loop::after { content: ""; position: absolute; bottom: 0; width: 50%; }
+  .sp-s-loop::before { left: 0; border-bottom: 2px dashed #4A4C55; }
+  .sp-s-loop::after { right: 0; border-bottom: 2px solid var(--sp-blue); }
+  .sp-s-loop svg { position: absolute; left: 0; bottom: -2px; width: var(--L); height: calc(var(--L) * .846); overflow: visible; }
+  .sp-s-run { flex: 3.2 1 0; height: 100%; position: relative; border-bottom: 2px solid var(--sp-blue); }
+  .sp-s-run i { position: absolute; bottom: -.44rem; width: .75rem; height: .75rem; margin-left: -.375rem; border-radius: 50%;
+    background: var(--sp-blue); border: 2px solid var(--sp-blue); }
+  .sp-s-run i.end { width: 1rem; height: 1rem; margin-left: -.5rem; bottom: -.56rem; background: var(--sp-ink); border-color: var(--sp-ink); }
+  .sp-sched.live .sp-s-run i { background: var(--sp-paper); }
+  .sp-sched.live .sp-s-run i.on { background: var(--sp-blue); }
+  .sp-sched.live .sp-s-run i.end { background: var(--sp-paper); }
+  .sp-sched.live .sp-s-run i.end.on { background: var(--sp-ink); }
+  .sp-s-tag { position: absolute; left: 0; bottom: .7rem; font-family: "IBM Plex Mono", Menlo, monospace; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase;
+    line-height: 1.3; color: var(--sp-dim); }
+  .sp-s-tag b { display: block; font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 1.7rem;
+    letter-spacing: 0; color: var(--sp-ink); line-height: 1.05; }
+  .sp-s-loop .sp-s-tag { left: 0; right: 0; top: 0; bottom: auto; text-align: center; }
+  .sp-s-run .sp-s-tag { left: 1.2rem; bottom: 2.1rem; }
+  .sp-s-run .sp-s-tag b { color: var(--sp-blue); }
+  .sp-s-axis { display: flex; padding-top: .8rem; font-size: .8rem; color: var(--sp-dim); line-height: 1.25; }
+  .sp-s-axis span:nth-child(1) { flex: 1.1 1 0; min-width: 2.6rem; }
+  .sp-s-axis span:nth-child(2) { flex: 0 0 var(--L); text-align: center; }
+  .sp-s-axis span:nth-child(3) { flex: 3.2 1 0; text-align: right; }
+  .sp-s-axis i.v { display: block; font-size: 1.3rem; color: var(--sp-ink); }
+  .sp-s-dot { position: absolute; left: 0; top: 0; width: 1.1rem; height: 1.1rem; margin: -.55rem 0 0 -.55rem; border-radius: 50%;
+    background: var(--sp-red); box-shadow: 0 0 0 3px var(--sp-paper); display: none; opacity: 0; pointer-events: none; will-change: transform; }
+  .sp-sched.live .sp-s-dot { display: block; }
+
+  .sp-phases { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 2rem 3.2rem; margin-top: 2.4rem; }
+  .sp-phase h3 { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.8rem; line-height: 1.1; margin: .4rem 0 .7rem; color: var(--sp-ink); }
+  .sp-phase h3 em { font-style: normal; font-weight: 800; text-transform: uppercase; } .sp-phase.two h3 em { color: var(--sp-blue); }
+  .sp-phase > span { color: var(--sp-dim); }
+  .sp-phase p { margin: 0 0 .8rem; color: var(--sp-soft); }
+  .sp-phase ol { list-style: none; margin: 0 0 1rem; padding: 0; counter-reset: s; }
+  .sp-phase li { counter-increment: s; position: relative; padding: .55rem .6rem .55rem 2.5rem; border-top: 1px solid var(--sp-rule);
+    transition: background .25s; }
+  .sp-phase li:last-child { border-bottom: 1px solid var(--sp-rule); }
+  .sp-phase li::before { content: counter(s); position: absolute; left: .45rem; top: .58rem; width: 1.45rem; height: 1.45rem; border-radius: 50%;
+    display: grid; place-items: center; font-size: .78rem; font-weight: 600; border: 1.5px solid var(--sp-ink); color: var(--sp-ink);
+    transition: background .25s, color .25s, border-color .25s; }
+  .sp-phase.two li::before { content: ""; width: .8rem; height: .8rem; left: .78rem; top: .95rem; border-color: var(--sp-blue); }
+  .sp-phase li b { font-weight: 600; }
+  .sp-phase li.on { background: rgba(215,255,62,.09); }
+  .sp-phase.one li.on::before { background: var(--sp-ink); color: var(--sp-paper); }
+  .sp-phase.two li.on::before { background: var(--sp-blue); }
+  .sp-fig { margin-top: 2.6rem; margin-bottom: 0; margin-right: 0; }
+  .sp-fig a { display: block; }
+  /* The overview is a drawing on pale paper. Inverted (hues kept) and screened onto the page, it reads as chalk on the dark ground. */
+  .sp-fig img { display: block; width: 100%; height: auto; filter: invert(1) hue-rotate(180deg) contrast(1.15); mix-blend-mode: screen; }
+  .sp-fig figcaption { font-family: "IBM Plex Mono", Menlo, monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--sp-dim); text-align: center; margin-top: .6rem; }
+
+  /* ---------- results ---------- */
+  .sp-tablewrap { margin-top: 1.6rem; }
+  .sp table.sp-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin: 0; color: var(--sp-ink); }
+  .sp-table caption { caption-side: top; text-align: left; padding: 0 0 .7rem; color: var(--sp-dim); font-family: "IBM Plex Mono", Menlo, monospace;
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
+  .sp-table th, .sp-table td { border: 0; background: none; text-align: left; padding: .7rem .5rem; }
+  .sp-table thead th { font-family: "IBM Plex Mono", Menlo, monospace; font-size: .7rem; font-weight: 400; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--sp-dim); border-bottom: 1px solid var(--sp-dim); padding-bottom: .55rem; }
+  .sp-table tbody th { font-weight: 500; color: var(--sp-soft); }
+  .sp-table tbody tr > * { border-bottom: 1px solid var(--sp-rule); }
+  .sp-table td { white-space: nowrap; font-size: 1.08rem; color: var(--sp-soft); }
+  .sp-table td small { font-size: .82rem; color: var(--sp-dim); margin-left: .35rem; }
+  .sp-table .us { background: rgba(215,255,62,.06); }
+  .sp-table thead th.us { color: var(--sp-blue); }
+  .sp-table td.best strong { font-weight: 600; color: var(--sp-blue); }
+  .sp-table td.best strong::before { content: ""; display: inline-block; width: .5rem; height: .5rem; border-radius: 50%; background: var(--sp-blue);
+    margin-right: .4rem; vertical-align: .12em; }
+  .sp-table td:not(.best) strong { font-weight: 400; padding-left: .9rem; color: var(--sp-soft); }
+
+  /* cost: a raised panel; the accent marks G&G's own bars */
+  .sp-blue { background: var(--sp-paper-2); border-top: 1px solid var(--sp-rule); border-bottom: 1px solid var(--sp-rule);
+    padding: clamp(2rem, 5vw, 3.4rem) 0; margin-top: clamp(2.5rem, 6vw, 4rem); }
+  .sp-cost { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.2rem 3rem; }
+  .sp-bars h3 { font-family: "Barlow Condensed", sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.9rem; line-height: 1; color: var(--sp-ink); margin: 0 0 .3rem; }
+  .sp-bars > span { display: block; color: var(--sp-dim); margin-bottom: 1rem; }
+  .sp-bar { display: grid; grid-template-columns: 5.2rem minmax(0, 1fr) auto; align-items: center; gap: .7rem; padding: .5rem 0;
+    border-top: 1px solid var(--sp-rule); font-variant-numeric: tabular-nums; color: var(--sp-soft); }
+  .sp-bar .n { font-size: .95rem; } .sp-bar .v { font-size: 1.05rem; min-width: 4.6rem; text-align: right; }
+  .sp-bar .b { display: block; height: .6rem; }
+  .sp-bar .b i { display: block; height: 100%; min-width: .6rem; border-radius: .3rem; background: #4A4C55;
+    width: calc(var(--v) / var(--m) * 100%); }
+  .sp-bar.us .n, .sp-bar.us .v { font-weight: 600; color: var(--sp-blue); } .sp-bar.us .b i { background: var(--sp-blue); }
+  .sp-takes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 3rem; margin-top: 2.4rem; }
+  .sp-takes p { margin: 0; font-weight: 500; font-size: clamp(1.1rem, 2vw, 1.3rem); line-height: 1.38; }
+  .sp-takes b { display: block; font-family: "IBM Plex Mono", Menlo, monospace; font-size: .7rem; font-weight: 400; letter-spacing: .12em;
+    text-transform: uppercase; margin-bottom: .5rem; color: var(--sp-blue); }
+
+  /* ---------- limits, citation ---------- */
+  .sp-limit { border-left: 3px solid var(--sp-red); padding: .1rem 0 .1rem 1.2rem; max-width: 44rem; }
+  .sp-limit p { margin: 0; color: var(--sp-soft); }
+  .sp-bib { position: relative; border: 1px solid var(--sp-rule); border-radius: .6rem; background: var(--sp-paper-2); }
+  .sp-bib pre { margin: 0; padding: 1.2rem 1.3rem; overflow-x: auto; background: none; border: 0; color: var(--sp-soft);
+    font-family: "IBM Plex Mono", "SF Mono", Menlo, monospace; font-size: .82rem; line-height: 1.6; }
+  .sp-bib button { position: absolute; top: .7rem; right: .7rem; font-family: "IBM Plex Mono", Menlo, monospace; font-size: .66rem; letter-spacing: .12em;
+    text-transform: uppercase; padding: .4rem .75rem; border-radius: 99px; cursor: pointer; border: 1px solid var(--sp-rule); background: var(--sp-paper); color: var(--sp-soft); }
+  .sp-bib button:hover { border-color: var(--sp-blue); color: var(--sp-blue); }
+  .sp-end { color: var(--sp-dim); margin: 3rem 0 1rem; }
+
+  @media (min-width: 760px) {
+    .sp-title { font-size: min(34vw, 21rem); }
+    .sp-sched { --L: 11.5rem; }
+    .sp-meta { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 3rem; align-items: start; margin-top: 1.1rem; }
+    .sp-hand { font-size: 1.5rem; max-width: 24rem; margin-top: .2rem; }
+  }
+  @media (max-width: 759px) {
+    .sp-plates { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.3rem; }
+    .sp-three, .sp-phases, .sp-cost, .sp-takes { grid-template-columns: minmax(0, 1fr); }
+    .sp-s-tag { font-size: .6rem; letter-spacing: .08em; }
+    .sp-s-tag b { font-size: 1.35rem; }
+    .sp-s-run .sp-s-tag { left: .7rem; }
+    .sp-tag { font-size: .52rem; }
+    .sp-table th, .sp-table td { padding: .6rem .3rem; }
+    .sp-table td { font-size: 1rem; }
+    .sp-table td small { display: block; margin: 0; }
+    .sp-table td:not(.best) strong, .sp-table td:not(.best) small { padding-left: 0; }
+    .sp-table td.best strong::before { margin-right: .25rem; }
+    .sp-bib pre { padding-top: 3rem; font-size: .74rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sp-links a, .sp-phase li, .sp-phase li::before { transition: none; }
+  }
+</style>
+
+<!-- web fonts after the styles: a slow font request must not hold back the dark palette -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<div class="post sp">
+  {{ content }}
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector(".sp");
+    if (!root) return;
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var raf = window.requestAnimationFrame || function (f) { return setTimeout(function () { f(Date.now()); }, 16); };
+    function clamp(v) { return Math.min(1, Math.max(0, v)); }
+    function ease(u) { return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
+
+    /* ---------- restorations: drag the divider between the observation (left) and the restoration (right) ---------- */
+    root.classList.add("sp-js");
+    var all = [];
+    Array.prototype.slice.call(root.querySelectorAll(".sp-cmp")).forEach(function (el, index) {
+      var top = el.querySelector(".sp-cmp-top"), line = el.querySelector(".sp-cmp-line line"), knob = el.querySelector(".sp-cmp-knob");
+      var lean = parseFloat(el.getAttribute("data-lean") || "0.2");   // horizontal run of the divider, as a fraction of the height
+      var state = { pos: 0.5, touched: false, visible: false, t0: null };
+      function run() { return lean * el.clientHeight / Math.max(1, el.clientWidth); }
+      function draw() {
+        var d = run(), a = (state.pos + d / 2) * 100, b = (state.pos - d / 2) * 100;
+        top.style.clipPath = "polygon(0 0, " + a + "% 0, " + b + "% 100%, 0 100%)";
+        line.setAttribute("x1", a + "%"); line.setAttribute("x2", b + "%");
+        // the knob rides low on the divider, clear of the faces, and never leaves the frame
+        knob.style.left = Math.min(93, Math.max(7, a + (b - a) * 0.84)) + "%";
+        if (state.touched) knob.setAttribute("aria-valuenow", Math.round(clamp(state.pos) * 100));   // not while it only drifts
+      }
+      // The divider may run half its lean past either edge, so each picture can be shown whole.
+      function set(v) { var d = run(); state.pos = Math.min(1 + d / 2, Math.max(-d / 2, v)); draw(); }
+      function follow(e) {
+        var r = el.getBoundingClientRect(), y = (e.clientY - r.top) / r.height;
+        set((e.clientX - r.left) / r.width - run() * (0.5 - y));   // keep the divider under the pointer
+      }
+      function hold(e) { state.touched = true; try { el.setPointerCapture(e.pointerId); } catch (err) {} }
+      // A mouse drags at once. A finger first has to move sideways, so that scrolling the page past a picture leaves it alone.
+      var drag = null;
+      el.addEventListener("pointerdown", function (e) {
+        if (e.button) return;
+        drag = { x: e.clientX, y: e.clientY, on: e.pointerType !== "touch" };
+        if (drag.on) { hold(e); follow(e); }
+      });
+      el.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        if (!drag.on) {
+          var dx = Math.abs(e.clientX - drag.x), dy = Math.abs(e.clientY - drag.y);
+          if (dx < 6 || dx < dy) return;
+          drag.on = true; hold(e);
+        }
+        follow(e);
+      });
+      el.addEventListener("pointerup", function (e) {
+        if (drag && !drag.on && Math.abs(e.clientX - drag.x) < 6 && Math.abs(e.clientY - drag.y) < 6) { state.touched = true; follow(e); }   // a tap
+        drag = null;
+      });
+      ["pointercancel", "lostpointercapture"].forEach(function (name) { el.addEventListener(name, function () { drag = null; }); });
+      knob.addEventListener("keydown", function (e) {
+        var k = e.key, v = null;
+        if (k === "ArrowLeft" || k === "ArrowDown") v = state.pos - 0.04;
+        else if (k === "ArrowRight" || k === "ArrowUp") v = state.pos + 0.04;
+        else if (k === "PageDown") v = state.pos - 0.2;
+        else if (k === "PageUp") v = state.pos + 0.2;
+        else if (k === "Home") v = -1;
+        else if (k === "End") v = 2;
+        if (v !== null) { state.touched = true; set(v); e.preventDefault(); }
+      });
+      knob.addEventListener("focus", function () { state.touched = true; draw(); });   // it stops drifting once it has focus
+      window.addEventListener("resize", draw);
+      // Until someone touches it, the divider drifts slowly, each picture a little out of step with the others.
+      state.tick = function (now) {
+        if (state.touched || !state.visible) return;
+        if (state.t0 === null) state.t0 = now;
+        set(0.5 + 0.07 * Math.sin((now - state.t0) / 1000 * 0.9 + index * 1.7));
+      };
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) { state.visible = entries[0].isIntersecting; }, { threshold: 0.15 }).observe(el);
+      } else { state.visible = true; }
+      draw(); all.push(state);
+    });
+    if (all.length && !reduce) raf(function loop(now) {
+      var live = false;
+      all.forEach(function (c) { c.tick(now); live = live || !c.touched; });
+      if (live) raf(loop);
+    });
+
+    /* ---------- the schedule: a marker walks the two phases ---------- */
+    var sched = root.querySelector(".sp-sched");
+    if (sched && !reduce && "IntersectionObserver" in window) {
+      var dot = sched.querySelector(".sp-s-dot"), svg = sched.querySelector(".sp-s-loop svg");
+      var marks = Array.prototype.slice.call(sched.querySelectorAll(".sp-s-run i"));
+      var items = {};
+      Array.prototype.slice.call(root.querySelectorAll("[data-step]")).forEach(function (n) { items[n.getAttribute("data-step")] = n; });
+      var ORBITS = 3, T_ORBIT = 1.7, T_HOP = 0.8, T_STAY = 0.7, T_END = 1.6;
+      var total = ORBITS * T_ORBIT + marks.length * (T_HOP + T_STAY) + T_END;
+      var visible = false, running = false, start = null, lastKey = "", lastOn = -1;
+
+      function show(key, on) {
+        if (key !== lastKey) {
+          if (items[lastKey]) items[lastKey].classList.remove("on");
+          if (items[key]) items[key].classList.add("on");
+          lastKey = key;
+        }
+        if (on !== lastOn) { marks.forEach(function (m, i) { m.classList.toggle("on", i < on); }); lastOn = on; }
+      }
+      function frame(now) {
+        if (!visible) { running = false; return; }
+        if (start === null) start = now;
+        var t = ((now - start) / 1000) % total;
+        var sr = sched.getBoundingClientRect(), lr = svg.getBoundingClientRect(), k = lr.width / 130;
+        var cx = lr.left - sr.left + 65 * k, cy = lr.top - sr.top + 68 * k, R = 40 * k;
+        var x, y, key = "", on = 0;
+        if (t < ORBITS * T_ORBIT) {
+          var f = (t / T_ORBIT) % 1, a = Math.PI / 2 + f * 2 * Math.PI;
+          x = cx + R * Math.cos(a); y = cy + R * Math.sin(a); key = "a" + (1 + Math.floor(f * 3));
+        } else {
+          t -= ORBITS * T_ORBIT;
+          var base = cy + R, i = Math.floor(t / (T_HOP + T_STAY));
+          function at(j) { if (j < 0) return cx; var r = marks[j].getBoundingClientRect(); return r.left - sr.left + r.width / 2; }
+          if (i >= marks.length) { x = at(marks.length - 1); y = base; on = marks.length; }
+          else {
+            var u = t - i * (T_HOP + T_STAY), x0 = at(i - 1), x1 = at(i);
+            if (u < T_HOP) { var e = ease(u / T_HOP); x = x0 + (x1 - x0) * e; y = base - Math.sin(Math.PI * e) * Math.min(26, (x1 - x0) * 0.45); key = "b1"; on = i; }
+            else { x = x1; y = base; key = (u - T_HOP) / T_STAY < 0.6 ? "b2" : "b3"; on = i + 1; }
+          }
+        }
+        dot.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+        if (!dot.style.opacity) dot.style.opacity = "1";
+        show(key, on);
+        raf(frame);
+      }
+      sched.classList.add("live");
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        if (visible && !running) { running = true; raf(frame); }
+      }, { threshold: 0.1 }).observe(sched);
+    }
+
+    /* ---------- copy BibTeX ---------- */
+    var copy = root.querySelector(".sp-bib button");
+    if (copy) {
+      copy.hidden = false;
+      copy.addEventListener("click", function () {
+        var text = root.querySelector(".sp-bib pre").textContent;
+        function done() { copy.textContent = "Copied"; setTimeout(function () { copy.textContent = "Copy"; }, 1600); }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () {});
+      });
+    }
+  })();
+</script>

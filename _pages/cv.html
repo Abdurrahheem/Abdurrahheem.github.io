@@ -1,0 +1,73 @@
+---
+layout: darkroom
+permalink: /cv/
+title: cv
+nav: true
+nav_order: 5
+cv_pdf: resume.pdf
+description: "Curriculum vitae of Abduragim Shtanchaev."
+---
+{% comment %} The entries live in _data/resume.json (JSON Resume format). {% endcomment %}
+{% assign r = site.data.resume %}
+
+<div class="dr-cv">
+  <header class="dr-top">
+    <h1>Curriculum<br>Vitae</h1>
+    <p class="dr-side dr-mono">{{ r.basics.location.city }}{% if r.basics.location.countryCode %}, {{ r.basics.location.countryCode }}{% endif %}<br>
+      <a class="dr-pill fill" href="{{ page.cv_pdf | prepend: '/assets/pdf/' | relative_url }}" target="_blank" rel="noopener" style="margin-top:.6rem">Download PDF &darr;</a></p>
+  </header>
+
+  {% if r.education %}
+  <div class="dr-sec word now"><h2 class="dr-num">Education</h2><span class="dr-note dr-mono">{{ r.education.size }} degrees</span></div>
+  {% for x in r.education %}{% assign a = x.startDate | slice: 0, 4 %}{% assign b = x.endDate | slice: 0, 4 %}
+  <article class="dr-row">
+    <div class="dr-when dr-mono">{{ a }} &mdash; {{ b }}</div>
+    <div>
+      <h3>{{ x.studyType }}, {{ x.area }}</h3>
+      <p class="dr-place">{% if x.url %}<a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.institution }}</a>{% else %}{{ x.institution }}{% endif %} &middot; {{ x.location }}{% if x.score %} &middot; GPA {{ x.score }}{% endif %}</p>
+      {% if x.description %}<p class="dr-desc">{{ x.description }}</p>{% endif %}
+    </div>
+  </article>
+  {% endfor %}
+  {% endif %}
+
+  {% if r.work %}
+  <div class="dr-sec word"><h2 class="dr-num">Experience</h2><span class="dr-note dr-mono">{{ r.work.size }} roles</span></div>
+  {% for x in r.work %}{% assign a = x.startDate | slice: 0, 4 %}{% if x.endDate == 'Present' %}{% assign b = 'now' %}{% else %}{% assign b = x.endDate | slice: 0, 4 %}{% endif %}
+  <article class="dr-row">
+    <div class="dr-when dr-mono">{% if a == b %}{{ a }}{% else %}{{ a }} &mdash; {{ b }}{% endif %}</div>
+    <div>
+      <h3>{{ x.position }}</h3>
+      <p class="dr-place">{{ x.name }}{% if x.location %} &middot; {{ x.location }}{% endif %}</p>
+      {% if x.highlights %}<ul class="dr-desc">{% for h in x.highlights %}<li>{{ h }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+  </article>
+  {% endfor %}
+  {% endif %}
+
+  {% if r.awards %}
+  <div class="dr-sec word"><h2 class="dr-num">Awards</h2><span class="dr-note dr-mono">{{ r.awards.size }}</span></div>
+  {% for x in r.awards %}
+  <article class="dr-row slim">
+    <div class="dr-when dr-mono">{{ x.date }}</div>
+    <div><h3>{{ x.title }}</h3>{% if x.description %}<span class="dr-tag">{{ x.description | escape }}</span>{% endif %}</div>
+  </article>
+  {% endfor %}
+  {% endif %}
+
+  {% if r.skills %}
+  <div class="dr-sec word"><h2 class="dr-num">Skills</h2></div>
+  {% for x in r.skills %}
+  <article class="dr-row slim">
+    <div class="dr-when dr-mono">{{ x.name }}</div>
+    <div class="dr-chipsline">{% for k in x.keywords %}<span>{{ k }}</span>{% endfor %}</div>
+  </article>
+  {% endfor %}
+  {% if r.languages %}
+  <article class="dr-row slim">
+    <div class="dr-when dr-mono">Languages</div>
+    <div class="dr-chipsline">{% for x in r.languages %}<span>{{ x.language }} <i>{{ x.fluency }}</i></span>{% endfor %}</div>
+  </article>
+  {% endif %}
+  {% endif %}
+</div>

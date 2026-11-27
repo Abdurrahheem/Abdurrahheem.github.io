@@ -1,0 +1,140 @@
+# Publications shown on /publications/.
+# year: the section the entry is listed under.  topic: inverse | generative | reasoning | vision | writing.
+# venues: kind is "solid" (published at a main venue), "review" (under review) or "line" (workshop, blog, preprint).
+# links: the first one is where the title leads.  The row's figure is assets/img/pubs/<key>.jpg.
+# featured: optional; puts the entry in the large panels at the top (before / after pictures with a divider).
+- key: paseo
+  year: 2027
+  topic: inverse
+  title: "Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems"
+  authors: "Abduragim Shtanchaev, Arip Asadulaev, Luiza Labazanova, Aidar Alimbayev, Karim Salta, Eric Moulines"
+  venues:
+    - { name: "ICLR 2027", kind: review }
+    - { name: "NeurIPS 2026 BeNTo Workshop", kind: line }
+  links:
+    - { label: Project, url: /projects/paseo/ }
+    - { label: Paper, url: "https://arxiv.org/pdf/2609.33171" }
+  featured:
+    name: PASEO
+    outline: A
+    lean: 0.2
+    before: /assets/img/paseo/blur_y.jpg
+    after: /assets/img/paseo/blur_paseo.jpg
+
+- key: yflows
+  year: 2027
+  topic: generative
+  title: "Y-shaped Generative Flows"
+  authors: "Arip Asadulaev, Semyon Semenov*, Abduragim Shtanchaev*, Eric Moulines, Fakhri Karray, Martin Takac"
+  venues:
+    - { name: "ICLR 2027", kind: review }
+  links:
+    - { label: Paper, url: "https://arxiv.org/pdf/2510.11955" }
+
+- key: ccrm
+  year: 2026
+  topic: reasoning
+  title: "Convex Compositional Reasoning Models"
+  authors: "Meir Roketlishvili, Semyon Semenov, ..., Abduragim Shtanchaev, ..., Martin Takac, Arip Asadulaev"
+  venues:
+    - { name: "NeurIPS 2026", kind: solid }
+  links:
+    - { label: Paper, url: "https://arxiv.org/pdf/2605.23395" }
+
+- key: gng
+  year: 2026
+  topic: inverse
+  title: "Sparse Scheduled Diffusion Guidance for Inverse Problems"
+  authors: "Abduragim Shtanchaev, Albina Ilina, Yazid Janati, Arip Asadulaev, Martin Takac, Eric Moulines"
+  venues:
+    - { name: "ICLR 2026 ReALM-GEN Workshop", kind: line }
+  links:
+    - { label: Project, url: /projects/spin/ }
+    - { label: Paper, url: "https://arxiv.org/pdf/2603.07860" }
+    - { label: arXiv, url: "https://arxiv.org/abs/2603.07860" }
+  featured:
+    name: Spin
+    lean: 0
+    before: /assets/img/guess_and_guide/comparisons/inpainting_degraded.png
+    after: /assets/img/guess_and_guide/comparisons/inpainting_restored.png
+
+- key: cagfn
+  year: 2026
+  topic: generative
+  title: "Curriculum-Augmented GFlowNets For mRNA Sequence Generation"
+  authors: "Aya Laajil, Abduragim Shtanchaev, Sajan Muhammad, Eric Moulines, Salem Lahlou"
+  venues:
+    - { name: "NeurIPS 2026", kind: solid }
+  links:
+    - { label: Paper, url: "https://www.arxiv.org/pdf/2510.03811" }
+
+- key: alm
+  year: 2025
+  topic: vision
+  title: "All Languages Matter: Evaluating LMMs on Culturally Diverse 100 Languages"
+  authors: "Ashmal Vayani, Dinura Dissanayake, ..., Abduragim Shtanchaev, ..."
+  venues:
+    - { name: "CVPR 2025", kind: solid }
+  links:
+    - { label: Project, url: "https://mbzuai-oryx.github.io/ALM-Bench/" }
+    - { label: Paper, url: "https://arxiv.org/pdf/2411.16508" }
+
+- key: extract
+  year: 2024
+  topic: vision
+  title: "Extract More from Less"
+  authors: "Dmitry Demidov, Abduragim Shtanchaev, Mihail Mihaylov, Mohammad Almansoori"
+  venues:
+    - { name: "BMVC 2024", kind: solid }
+  links:
+    - { label: Paper, url: "https://arxiv.org/pdf/2406.19814" }
+
+- key: opencv
+  year: 2023
+  topic: writing
+  title: "Getting the Hang of OpenCV's Inner Workings with ChatGPT"
+  authors: "Abduragim Shtanchaev"
+  venues:
+    - { name: "OpenCV blog", kind: line }
+  links:
+    - { label: Blog, url: "https://www.opencv.ai/blog/getting-the-hang-of-opencvs-inner-workings-with-chatgpt" }
+
+- key: detect
+  year: 2021
+  topic: writing
+  title: "A Recipe to Train Object Detection Models"
+  authors: "Abduragim Shtanchaev"
+  venues:
+    - { name: "Blog", kind: line }
+  links:
+    - { label: Blog, url: /algorithm/How-to-Train-Detectors-Properly/ }
+
+- key: adrecall
+  year: 2020
+  topic: vision
+  title: "Multimodal Ad Recall Prediction Based on Viewer's and Ad Features"
+  authors: "Mariya Malygina, Abduragim Shtanchaev, Marina Churikova, Olga Perepelkina"
+  venues:
+    - { name: "PsyArXiv", kind: line }
+  links:
+    - { label: Paper, url: "https://psyarxiv.com/csv5d/" }
+
+- key: forest
+  year: 2020
+  topic: vision
+  title: "Automated Remote Sensing Forest Inventory Using Satellite Imagery"
+  authors: "Abduragim Shtanchaev, Artur Bille, Olga Sutyrina, Sara Elelimy"
+  venues:
+    - { name: "IAC 2020", kind: line }
+  links:
+    - { label: arXiv, url: "https://arxiv.org/abs/2110.08590" }
+
+- key: camera
+  year: 2020
+  topic: writing
+  title: "Camera Trajectory Estimation"
+  authors: "Abduragim Shtanchaev"
+  venues:
+    - { name: "Blog", kind: line }
+  links:
+    - { label: Blog, url: /algorithm/Camera-Trajectory-Estimation/ }

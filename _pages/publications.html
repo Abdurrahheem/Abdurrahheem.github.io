@@ -1,0 +1,73 @@
+---
+layout: darkroom
+permalink: /publications/
+title: publications
+nav: true
+nav_order: 2
+description: "Publications of Abduragim Shtanchaev."
+---
+{% comment %} The entries live in _data/pubs.yml. {% endcomment %}
+{% assign pubs = site.data.pubs %}
+{% assign me = site.first_name | append: ' ' | append: site.last_name %}
+{% assign me_bold = '<b>' | append: me | append: '</b>' %}
+
+<div class="dr-pubs">
+  <header class="dr-top">
+    <h1>Publications<sup>{{ pubs.size }}</sup></h1>
+  </header>
+
+  <div class="dr-feat">
+    {% for p in pubs %}{% if p.featured %}{% assign f = p.featured %}
+    <div class="dr-card">
+      <div class="dr-split" data-lean="{{ f.lean | default: 0 }}">
+        <img src="{{ f.after | relative_url }}" alt="{{ f.name | escape }}: result">
+        <img class="dr-over" src="{{ f.before | relative_url }}" alt="{{ f.name | escape }}: degraded input">
+        <svg aria-hidden="true"><line x1="50%" y1="0" x2="50%" y2="100%"/></svg>
+        {% assign shown = f.name | escape %}{% if f.outline %}{% assign marked = '<i>' | append: f.outline | append: '</i>' %}{% assign shown = shown | replace_first: f.outline, marked %}{% endif %}
+        <p class="dr-name{% if f.name.size > 8 %} long{% endif %}">{{ shown }}</p>
+      </div>
+      <div class="dr-venue">{% for v in p.venues %}<span class="dr-tag {{ v.kind }}">{{ v.name }}{% if v.kind == 'review' %}<i>under review</i>{% endif %}</span>{% endfor %}</div>
+      <h2>{{ p.title }}</h2>
+      <nav class="dr-go dr-mono">
+        {% for l in p.links %}{% assign c = l.url | slice: 0 %}
+        <a class="dr-pill{% if forloop.first %} fill{% endif %}" href="{% if c == '/' %}{{ l.url | relative_url }}{% else %}{{ l.url }}{% endif %}"{% unless c == '/' %} target="_blank" rel="noopener"{% endunless %}>{% if l.label == 'Project' %}Project page &rarr;{% else %}{{ l.label }}{% endif %}</a>
+        {% endfor %}
+      </nav>
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+
+  <div class="dr-chips" role="group" aria-label="Filter by topic">
+    <button type="button" data-topic="all" aria-pressed="true">All<sup>{{ pubs.size }}</sup></button>
+    {% assign topics = "inverse|Inverse problems,generative|Generative models,reasoning|Reasoning,vision|Vision,writing|Writing" | split: "," %}
+    {% for item in topics %}{% assign t = item | split: "|" %}{% assign n = pubs | where: "topic", t[0] | size %}{% if n > 0 %}
+    <button type="button" data-topic="{{ t[0] }}" aria-pressed="false">{{ t[1] }}<sup>{{ n }}</sup></button>
+    {% endif %}{% endfor %}
+  </div>
+
+  {% assign years = pubs | group_by: "year" %}
+  {% for y in years %}
+  {% assign in_review = y.items | where_exp: "p", "p.venues.first.kind == 'review'" | size %}
+  <section class="dr-year">
+    <header class="dr-sec{% if forloop.first %} now{% endif %}">
+      <h2 class="dr-num">{{ y.name }}</h2>
+      <span class="dr-note dr-mono">{% if in_review == y.items.size %}under review &middot; {% endif %}<span class="dr-count">{{ y.items.size }} {% if y.items.size == 1 %}entry{% else %}entries{% endif %}</span></span>
+    </header>
+    {% for p in y.items %}{% assign first = p.links.first %}{% assign c = first.url | slice: 0 %}
+    <article class="dr-row" data-topic="{{ p.topic }}">
+      <div class="dr-venue">{% for v in p.venues %}<span class="dr-tag {{ v.kind }}">{{ v.name }}{% if v.kind == 'review' %}<i>under review</i>{% endif %}</span>{% endfor %}</div>
+      <div>
+        <a class="dr-title" href="{% if c == '/' %}{{ first.url | relative_url }}{% else %}{{ first.url }}{% endif %}"{% unless c == '/' %} target="_blank" rel="noopener"{% endunless %}>{{ p.title }}</a>
+        <p class="dr-authors">{{ p.authors | replace: me, me_bold }}</p>
+      </div>
+      <nav class="dr-links dr-mono">
+        {% for l in p.links %}{% assign c = l.url | slice: 0 %}
+        <a href="{% if c == '/' %}{{ l.url | relative_url }}{% else %}{{ l.url }}{% endif %}"{% unless c == '/' %} target="_blank" rel="noopener"{% endunless %}>{{ l.label }}</a>
+        {% endfor %}
+      </nav>
+      <figure class="dr-peek"><img data-src="{{ '/assets/img/pubs/' | append: p.key | append: '.jpg' | relative_url }}" alt=""></figure>
+    </article>
+    {% endfor %}
+  </section>
+  {% endfor %}
+</div>

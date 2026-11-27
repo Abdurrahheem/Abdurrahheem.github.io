@@ -3,10 +3,6 @@ layout: default
 ---
 <!-- _layouts/project_paseo.liquid: dark "darkroom" project page, matching the PASEO poster -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
 <style>
   /* The whole page is dark in both site themes, so the navbar and footer follow. */
   :root, html[data-theme="light"], html[data-theme="dark"] {
@@ -25,6 +21,7 @@ layout: default
     --ps-bg: #0A0B0E; --ps-ink: #ECEAE4; --ps-soft: #C9C8C3; --ps-dim: #8D8F96; --ps-rule: #3A3C44;
     --ps-good: #D7FF3E; --ps-bad: #FF6B5E;
   }
+  .toggle-container { display: none; }   /* the page is dark in both themes */
   body { overflow-x: clip; }
 
   .ps { font-family: "Barlow", "Avenir Next", "Helvetica Neue", sans-serif; color: var(--ps-ink); font-size: 1.06rem; line-height: 1.55; }
@@ -190,6 +187,11 @@ layout: default
     .ps-bib pre { padding-top: 3rem; font-size: .74rem; }
   }
 </style>
+
+<!-- web fonts after the styles: a slow font request must not hold back the dark palette -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <div class="post ps">
   {{ content }}

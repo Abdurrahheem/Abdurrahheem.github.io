@@ -1,0 +1,209 @@
+{
+  "basics": {
+    "name": "Abduragim Shtanchaev",
+    "position": "Ph.D. Student @ MBZUAI | Computer Vision Engineer @ OpenCV",
+    "image": "",
+    "email": "abduragim.shtanchaev@mbzuai.ac.ae",
+    "url": "https://abdurrahheem.github.io",
+    "location": {
+      "address": "",
+      "postalCode": "",
+      "city": "Abu Dhabi",
+      "countryCode": "UAE",
+      "region": ""
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "abdurahim-shtanchaev-",
+        "url": "https://www.linkedin.com/mwlite/in/abdurahim-shtanchaev-"
+      },
+      {
+        "network": "GitHub",
+        "username": "Abdurrahheem",
+        "url": "https://github.com/Abdurrahheem"
+      },
+      {
+        "network": "Google Scholar",
+        "username": "X92EJfMAAAAJ",
+        "url": "https://scholar.google.com/citations?user=X92EJfMAAAAJ"
+      },
+      {
+        "network": "Medium",
+        "username": "abduragim",
+        "url": "https://medium.com/@abduragim"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "OpenCV.ai",
+      "position": "Computer Vision Engineer",
+      "startDate": "2022-03-01",
+      "endDate": "Present",
+      "highlights": [
+        "Enhanced OpenCV DNN module by implementing unsupported graph engine functionalities",
+        "Contributed to supporting dynamism in graph engine for LLMs",
+        "Developed and deployed high-performance object detection models (>30 fps)",
+        "Achieved 2x memory efficiency boost through raw Bayer image representation"
+      ],
+      "location": "Remote"
+    },
+    {
+      "name": "O.Vision",
+      "position": "Applied Computer Vision Researcher",
+      "startDate": "2021-01-01",
+      "endDate": "2022-03-01",
+      "highlights": [
+        "Designed image quality assessment model for face recognition",
+        "Improved Acc@ZeroFP by 2% at 20% rejection rate",
+        "Built noise-robust face detection models with TensorRT optimization",
+        "Created deployment pipelines for NVIDIA Jetson Nano"
+      ],
+      "location": "Saint Petersburg, Russia"
+    },
+    {
+      "name": "NeurodataLab LLC",
+      "position": "Research Data Scientist",
+      "startDate": "2020-04-01",
+      "endDate": "2020-09-01",
+      "highlights": [
+        "Developed models for ad recall prediction using facial emotions",
+        "Co-authored research paper on multimodal ad recall prediction"
+      ],
+      "location": "Moscow, Russia"
+    },
+    {
+      "name": "German Orbital Systems",
+      "position": "Research Intern",
+      "startDate": "2019-06-01",
+      "endDate": "2019-09-01",
+      "highlights": [
+        "Designed test-bed for Attitude Determination and Control System for CubeSats",
+        "Enabled comprehensive in-lab testing prior to launch"
+      ],
+      "location": "Berlin, Germany"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Mohamed bin Zayed University of Artificial Intelligence",
+      "location": "Abu Dhabi, UAE",
+      "url": "https://mbzuai.ac.ae",
+      "area": "Machine Learning: Probabilistic Generative AI",
+      "studyType": "Ph.D.",
+      "startDate": "2023-08-01",
+      "endDate": "2027-06-01",
+      "description": "Research focus on Bayesian Inverse Problems with Diffusion Priors under Prof. Martin Takáč & Prof. Eric Moulines"
+    },
+    {
+      "institution": "Skoltech",
+      "location": "Moscow, Russia",
+      "url": "https://www.skoltech.ru/en/",
+      "area": "Information Systems and Technology",
+      "studyType": "M.Sc.",
+      "startDate": "2018-09-01",
+      "endDate": "2020-07-01",
+      "score": "3.95/4.00",
+      "description": "Graduated with High Honors, Research in automated forest inventory using satellite imagery"
+    },
+    {
+      "institution": "University of Turkish Aeronautical Association",
+      "location": "Ankara, Turkey",
+      "url": "https://www.thk.edu.tr/",
+      "area": "Mechatronics Engineering",
+      "studyType": "B.Sc.",
+      "startDate": "2013-09-01",
+      "endDate": "2018-07-01",
+      "score": "3.35/4.00",
+      "description": "Graduated with Honors"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Strong",
+      "keywords": [
+        "Python",
+        "PyTorch",
+        "C/C++",
+        "OpenCV",
+        "Vim",
+        "Computer Vision",
+        "Bayesian Inference",
+        "Generative Modeling",
+        "Math & Statistics"
+      ]
+    },
+    {
+      "name": "Moderate",
+      "keywords": [
+        "CUDA/cuDNN",
+        "SQL",
+        "Docker",
+        "TensorRT",
+        "GNNs",
+        "NLP",
+        "RL",
+        "Generative Flow Nets"
+      ]
+    },
+    {
+      "name": "Familiar",
+      "keywords": [
+        "TensorFlow",
+        "Keras",
+        "mxnet",
+        "HTML",
+        "Jekyll",
+        "Flask",
+        "TVM",
+        "JAVA",
+        "OpenCL"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "Russian/Dargin/Lak",
+      "fluency": "Native"
+    },
+    {
+      "language": "Turkish",
+      "fluency": "Fluent"
+    }
+  ],
+  
+  "awards": [
+    {
+      "title": "Full Ph.D. Scholarship at MBZUAI",
+      "date": "2023",
+      "description": "Ranked 13th globally in AI"
+    },
+    {
+      "title": "Selected for SMILES program",
+      "date": "2020",
+      "description": "Top 10% applicants"
+    },
+    {
+      "title": "Graduated with High Honors from Skoltech",
+      "date": "2020"
+    },
+    {
+      "title": "Prestigious Full M.Sc. Scholarship at Skoltech",
+      "date": "2018",
+      "description": "Selected from 3k+ (<1%)"
+    },
+    {
+      "title": "Graduated with Honors from UTAA",
+      "date": "2018"
+    },
+    {
+      "title": "Full Scholarship for B.Sc. at UTAA",
+      "date": "2013"
+    }
+  ]
+}
